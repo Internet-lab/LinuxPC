@@ -345,7 +345,11 @@ EOF
 # Set Activities 
 # ---------------------------------------
 dconf write  /org/gnome/shell/favorite-apps   "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop']"
-
+# ---------------------------------------
+# Download remaining shell scripts
+# ---------------------------------------
+wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh
+wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
 # ---------------------------------------
 # Reboot 
 # ---------------------------------------
