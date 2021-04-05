@@ -92,7 +92,7 @@ c. Make sure that the storage capacity of the hard disk is as least that of the 
 
 ```$ sudo dd if=/dev/sdb of=/dev/sda```
 
-The command will take consdierable time to execute. 
+The command  take considerable time to complete. 
 
 c. Remove the flashdrive and reboot the target machine. 
 
