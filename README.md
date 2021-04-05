@@ -74,7 +74,7 @@ d. From the home directory of `labuser`, run the script with the command
 The script will prompt for hardware specific information. In particular, the script requests to enter the device name of the flashdrive (`/dev/sdb`).
 Once the script is completed, remove the flashdrive.  The flashdrive contains  the ISO image (`root.iso`) and grub configuration files.
 
-## 5. Running the LiveCD and copying it to the hard drive 
+## 5. Copying the LiveCD to the hard drive 
 The LiveCD can be run on a target machine from the flashdrive. This assumes that the BIOS is set so that the system first tries to boot from a flashdrive. 
 
 
@@ -87,7 +87,6 @@ b. Identify the device names of the flashdrive and the hard disk on the target s
 ```$ sudo lsblk -p```
 
 In many cases the hard disk is `/dev/sda` and the inserted flashdrive is `/dev/sdb`. Verify that this is the case. Otherwise, take not of the device names.  
-Copy the flashdrive to the hard disk. 
 
 c. Make sure that the storage capacity of the hard disk is as least that of the flashdrive.  Then, assuming that `/dev/sdb is the flashdrive and `/dev/sda` is the hard disk, copy the flashdrive to the hard disk with the command 
 
