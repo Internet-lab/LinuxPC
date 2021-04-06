@@ -8,7 +8,7 @@ Version:  April 2021
 a. Download Ubuntu Server 20.04 LTS from 
 https://ubuntu.com/download/server
 
-b. Install the Ubuntu server as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate 2048 MB memory and 10 GB for the virtual disk.
+b. Install the Ubuntu server as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
 During the installation, use the default settings. 
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
@@ -47,7 +47,7 @@ From the home directory of `labuser`, run the script with the command
 
 ```$ sudo bash makeliveCD.sh```
 
-The default location of the ISO script is `/tmp/tmpfs/root.iso`.
+The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/root.iso`. 
 
 ## 4. Create a bootable flashdrive with LiveCD 
 a.  Insert a flashdrive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flashdrive must be mounted in the Ubuntu VM. 
