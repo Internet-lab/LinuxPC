@@ -59,15 +59,7 @@ b. Identify the device name of the flashdrive with the command
 
 Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /dev/sdc or /dev/sdc1). 
 
-c. In case the flashdrive is automatically mounted by the Master VM, find the mount directory with 
-
-```$ df```
-
-Assuming the mount directory is “/mnt”, unmount the directory with 
-
-```$ sudo umount /mnt```
-
-d. From the home directory of `labuser`, run the script with the command 
+c. From the home directory of `labuser`, run the script with the command 
 
 ```$ sudo bash createBootableUSB.sh```
 
@@ -94,5 +86,5 @@ c. Make sure that the storage capacity of the hard disk is as least that of the 
 
 The command  take considerable time to complete. 
 
-c. Remove the flashdrive and reboot the target machine. 
+d. Remove the flashdrive and reboot the target machine. 
 
