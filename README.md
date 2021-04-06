@@ -11,9 +11,8 @@ https://ubuntu.com/download/server
 b. Install the Ubuntu server as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate 2048 MB memory and 10 GB for the virtual disk.
 During the installation, use the default settings. 
 
- * Agree to the installation of Openssh
-
- * For the user name password, select **Name: `Labuser`, userid: `labuser`, password: `labuser`**.
+ * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
+ * Agree to the installation of OpenSSH server
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
