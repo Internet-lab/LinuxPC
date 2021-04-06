@@ -25,6 +25,7 @@ c. Execute the script with the command
 ```$ sudo bash InstallBaremetalPC.sh```
 
  - The script installs  software packages and sets configuration files needed in the Internet Lab (as well as some additional software). 
+ - Answer `Y` when  prompted and select `<Yes>` in the screen `Configuring wireshark-common`. 
  - The script also downloads the shell scripts `makeLiveCD.sh` and `createBootableUSB.sh` used for the creation of the LiveCD.
  - The script reboots the OS, when the system reboots it will show a login screen of the Gnome Desktop. Login as `labuser` and verify that the software installation is completed. 
 
