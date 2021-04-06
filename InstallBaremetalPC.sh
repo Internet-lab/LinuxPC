@@ -270,6 +270,10 @@ apt-get install -y openvswitch-switch
 
 # ---------------------------------------
 # scapy 
+#   Not used in the Internet Lab, but 
+#   could be used for experimenting with 
+#   malformed packets. 
+#   You may want to skip the installation 
 # ---------------------------------------
 sudo apt update
 apt-get -y install scapy
@@ -340,7 +344,15 @@ cat <<EOF > /usr/share/gnome-background-properties/ubuntu-wallpapers.xml
 </wallpapers>
 EOF
 
-
+# ---------------------------------------
+# Install bokeh server 
+#   Bokeh is a visualization tool. It is not used in the 
+#   Internet Lab, but used for another set of Labs on 
+#   Linux scheduling.  
+#   You may want to skip the installation 
+# ---------------------------------------
+sudo apt install python3-pip
+pip3 install bokeh
 # ---------------------------------------
 # Set Activities 
 # ---------------------------------------
