@@ -116,7 +116,7 @@ loopback loop ${iso_dst}
 set root=(loop)
 
 menuentry "Boot LIVE CD from HDD/USB" {
-linux /casper/vmlinuz boot=casper iso-scan/filename=${iso_dst} noprompt
+linux /casper/vmlinuz boot=casper iso-scan/filename=${iso_dst} net.ifnames=0 biosdevname=0 noprompt
 initrd /casper/initrd
 }
 EOF
