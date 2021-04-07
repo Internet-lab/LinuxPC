@@ -26,8 +26,25 @@ cat <<EOF > /etc/rc.local
 #
 # rc.local
 #
-
+sudo hostname PC1 
 exit 0
+EOF
+#------------------------------------------
+# interface configuraiton added 
+#------------------------------------------
+cat <<EOF > /etc/netplan/00-installer-config.yaml 
+# This is the network config written by 'subiquity'
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      optional: true
+
+    eth1:
+      dhcp4: no
+      optional: true
 EOF
 sudo chmod 755 /etc/rc.local
 sudo apt -y install members
@@ -71,9 +88,11 @@ create "Shared Folder"
 # 
 # sudo rm google-chrome-stable_current_amd64.deb
 #--------------------- (V08) ---------------------
+# next lines are commented since they are repeated further below
+#--------------------- (V08) ---------------------
 #   Should non-superusers be able to capture packets?  YES
-sudo apt-get -y install wireshark
-sudo usermod -aG wireshark labuser
+#sudo apt-get -y install wireshark
+#sudo usermod -aG wireshark labuser
 #--------------------- (V10) ---------------------
 sudo apt update
 sudo apt -y install firefox
@@ -232,8 +251,9 @@ sudo apt -y install  wireshark
 # Just confirm YES if you want to. If you check on NO, you must run 
 # Wireshark with sudo. later, if you want to change this,
 # The next command allows to reconfigure the setting 
-sudo dpkg-reconfigure wireshark-common  # Answer YES when prompted
 sudo usermod -aG wireshark labuser
+# Answer YES when prompted
+sudo dpkg-reconfigure wireshark-common  
 # sudo usermod -aG vboxsf labuser    <--- does not exist in this install
 
 # ---------------------------------------
