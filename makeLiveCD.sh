@@ -20,33 +20,6 @@ if [ ! -z "${missing_packages}" ]; then
 fi
 
 ############################################################
-save_file=".makeLiveCD.env"
-echo Looking for environment file ${save_file}
-
-if test -f ${save_file}; then
-	while :; do
-		echo "Found an environment file ${save_file}".
-		read -p "Would you like to load it? [Yn] " answer
-		case ${answer} in
-			[YNyn]*|"" )
-				break;;
-		esac
-	done
-else
-	echo "No environment file found."
-	answer=n
-fi
-if [[ ${answer} == @([Yy]*|) ]]; then
-	source ${save_file}
-	if [[ $? != 0 ]]; then
-		echo "Failed to import environment file"
-	else
-		echo Loaded ${save_file}
-		imported_save_file=y
-	fi
-fi
-
-############################################################
 echo Setting up working directory
 
 if [ -z "${working_dir}" ]; then
@@ -94,25 +67,6 @@ if [[ ! -z ${reserved_user} ]]; then
 fi
 
 ############################################################
-
-if [[ ${imported_save_file} != y ]]; then
-	while :; do
-		read -p "Would you like to save your answers to a save file ${save_file}? [Yn]" answer
-		case ${answer} in
-			[Yy]|"" )
-				echo "Saving data"
-				cat > ${save_file} <<-EOF
-					hostname=${hostname}
-					working_dir=${working_dir}
-					iso_path=${iso_path}
-					EOF
-				break;;
-			[Nn] ) break;;
-		esac
-	done
-fi
-
-############################################################
 # Setting up variables
 
 src_dir=${working_dir}/rootfs							# Source directory for LiveCD files. Files are sync with `/` prior to squashing
@@ -139,7 +93,7 @@ echo Creating Excluded List
 
 # Set excluded list to ignore non-file paths, like mounting points, device directories, etc.
 # Also excludes this script and files that will change when the script is running, e.g., bash history.
-cat > ${excluded_list_file} <<EOF 
+cat > ${excluded_list_file} <<EOF
 /boot/grub/*
 /dev/*
 /etc/fstab

@@ -17,34 +17,10 @@ while :; do
 done
 
 ############################################################
-save_file=".makeLiveCD.env"
-echo Looking for environment file ${save_file}
-
-if test -f ${save_file}; then
-	echo "Found an environment file ${save_file}".
-	source ${save_file}
-	if [[ $? != 0 ]]; then
-		echo "Failed to import environment file"
-	else
-		echo Loaded ${save_file}
-		imported_save_file=y
-	fi
-fi
-
-############################################################
-iso_src=${iso_path}
-
-if [[ -z ${iso_src} ]]; then
-	iso_src=/tmp/liveCD/liveCD.iso
-fi
-
+read -p "Please enter the path to the ISO file " iso_src
 if [ ! -f ${iso_src} ]; then
-	echo "Cannot find an ISO file at ${iso_src}"
-	read "Please enter the path to the ISO file " iso_src
-	if [ ! -f ${iso_src} ]; then
-		echo "Cannot find an ISO file at ${iso_src}. Exiting"
-		exit 1
-	fi
+    echo "Cannot find an ISO file at ${iso_src}. Exiting"
+    exit 1
 fi
 
 ############################################################
