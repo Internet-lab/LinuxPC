@@ -23,7 +23,7 @@ fi
 echo Setting up working directory
 
 if [ -z "${working_dir}" ]; then
-	read -p "Enter working directory (/tmp/liveCD/): " working_dir
+	read -ep "Enter working directory (/tmp/liveCD/): " working_dir
 	if [ -z "${working_dir}" ]; then
 		working_dir="/tmp/liveCD"
 	fi
@@ -34,7 +34,7 @@ echo ${working_dir}
 ############################################################
 
 if [ -z "${iso_path}" ]; then
-	read -p "Where would you like to save the iso file? (${working_dir}/liveCD.iso)" iso_path
+	read -ep "Where would you like to save the iso file? (${working_dir}/liveCD.iso)" iso_path
 	if [ -z "${iso_path}" ]; then
 		iso_path=${working_dir}/liveCD.iso
 	fi

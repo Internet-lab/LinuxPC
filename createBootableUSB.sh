@@ -1,6 +1,6 @@
 #!/bin/bash
 # create bootable disk
-read -p "Please enter the path to the disk (USB) device (e.g., /dev/sdg): " disk
+read -ep "Please enter the path to the disk (USB) device (e.g., /dev/sdg): " disk
 # make sure no partition was entered
 x=`echo ${disk} | cut -d'/' -f 2`
 y=`echo ${disk} | cut -d'/' -f3`
@@ -17,7 +17,7 @@ while :; do
 done
 
 ############################################################
-read -p "Please enter the path to the ISO file " iso_src
+read -ep "Please enter the path to the ISO file: " iso_src
 if [ ! -f ${iso_src} ]; then
     echo "Cannot find an ISO file at ${iso_src}. Exiting"
     exit 1
@@ -44,7 +44,7 @@ done
 sudo wipefs -a "${disk}"
 # Partition the disk with MSDOS partition table
 sudo parted "${disk}" mklabel msdos
-# Create FAT32 partition starting at 512-bytes, and ends at the end of the disk (100%)
+# Create FAT32 partition starting at 1024-bytes, and ends at the end of the disk (100%)
 # The first 512B are reserved for GRUB, the rest are for alignment
 sudo parted "${disk}" mkpart primary fat32 1M 100% -a optimal
 # Create MSDOS file system named "LAB_LIVE_DISK"
