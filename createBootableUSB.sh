@@ -86,8 +86,6 @@ cat <<EOF | sudo tee >/dev/null ${mount_point}/boot/grub/grub.cfg
 set default="0"
 set timeout=0
 
-insmod $TYPE
-
 loopback loop ${iso_dst}
 set root=(loop)
 
