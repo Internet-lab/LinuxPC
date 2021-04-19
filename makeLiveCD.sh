@@ -139,7 +139,7 @@ echo Configuring Casper
 
 casp_conf=${src_dir}/etc/casper.conf
 sudo sed 's/^export HOST=.*/export HOST="'"$hostname"'"/g' -i "${casp_conf}"
-sudo sed 's/^# export FLAVOUR.*/export FLAVOUR=""/g' -i "${casp_conf}"
+sudo sed 's/^# export FLAVOUR.*/export FLAVOUR="ubuntu"/g' -i "${casp_conf}"
 
 ############################################################
 echo Resetting DNS server setting
@@ -152,6 +152,30 @@ hostname_file=${src_dir}/etc/hostname
 echo "${hostname}" | sudo tee >/dev/null "${hostname_file}"
 
 ############################################################
+# We need to update initial ram disk for changes to casper and hostname to take effect
+
+# Prepare for chroot
+sudo mount --bind /dev/ ${src_dir}/dev || ( echo "An error occured while mouting /dev for chroot"; exit 1; )
+sudo mount -t proc proc ${src_dir}/proc || ( echo "An error occured while mouting /proc for chroot"; exit 1; )
+sudo mount -t sysfs sysfs ${src_dir}/sys || ( echo "An error occured while mouting /sys for chroot"; exit 1; )
+sudo mount -o bind /run ${src_dir}/run || ( echo "error occured while mouting /run for chroot"; exit 1; )
+
+# May take some time for mounts to appear
+sleep 1
+
+# (chroot)
+cat <<EOF | sudo chroot ${src_dir} /bin/bash
+# update initrd
+update-initramfs -u -k $(uname -r)
+EOF
+
+# chroot complete - umount
+sudo umount ${src_dir}/proc
+sudo umount ${src_dir}/sys
+sudo umount ${src_dir}/dev
+sudo umount ${src_dir}/run
+
+############################################################
 echo Squashing source directory ${src_dir}
 
 rm -f "${livecd_dir}/${casper_fs}/filesystem.${FORMAT}"
@@ -160,17 +184,15 @@ sudo mksquashfs "${src_dir}" "${livecd_dir}/${casper_fs}/filesystem.${FORMAT}" -
 echo -n $(sudo du -s --block-size=1 ${src_dir} | tail -1 | awk '{print $1}') > ${livecd_dir}/${casper_fs}/filesystem.size
 
 ############################################################
-export KERNEL_VER=`cd /boot && ls -1 vmlinuz-* | tail -1 |sed 's@vmlinuz-@@'`
+export KERNEL_VER=`cd ${src_dir}/boot && ls -1 vmlinuz-* | tail -1 |sed 's@vmlinuz-@@'`
 if [[ -z ${KERNEL_VER} ]]; then
 	echo Cannot ascertain kernel version
 	exit 1
 fi
 
 echo Copying kernel: ${KERNEL_VER}
-
-sudo cp -p /boot/vmlinuz-${KERNEL_VER} ${livecd_dir}/${casper_fs}/vmlinuz
-sudo cp -p /boot/initrd.img-${KERNEL_VER} ${livecd_dir}/${casper_fs}/initrd
-# sudo cp -p /boot/memtest86+.bin ${livecd_dir}/boot/
+sudo cp -p ${src_dir}/boot/vmlinuz-${KERNEL_VER} ${livecd_dir}/${casper_fs}/vmlinuz
+sudo cp -p ${src_dir}/boot/initrd.img-${KERNEL_VER} ${livecd_dir}/${casper_fs}/initrd
 
 ############################################################
 echo Computing checksum
@@ -211,4 +233,3 @@ rm -f "${iso_path}"
 sudo grub-mkrescue -o "${iso_path}" ${livecd_dir}
 
 echo The ISO is created at ${iso_path}
-
