@@ -205,24 +205,20 @@ set default="0"
 set timeout=10
 
 menuentry "LiveCD Default" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet splash
+linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet
 initrd /casper/initrd
 }
 
 menuentry "LiveCD safe mode" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 xforcevesa quiet splash
+linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 xforcevesa quiet
 initrd /casper/initrd
 }
 menuentry "LiveCD CLI" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 textonly quiet splash
-initrd /casper/initrd
-}
-menuentry "LiveCD persistent mode" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 persistent quiet splash
+linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 textonly quiet
 initrd /casper/initrd
 }
 menuentry "LiveCD load in RAM" {
-linux /casper/vmlinuz boot=casper toram quiet splash
+linux /casper/vmlinuz boot=casper toram quiet
 initrd /casper/initrd
 }
 EOF
