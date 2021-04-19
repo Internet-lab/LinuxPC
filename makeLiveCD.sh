@@ -1,6 +1,15 @@
 #!/bin/bash
 
 ############################################################
+# Setup error handling
+
+# exit whan a command fails
+set -e
+
+# echo an error message for debugging before exiting
+trap '[ $? == 0 ] || >&2 echo "ERROR: \"${BASH_COMMAND}\" command filed with exit code $?."' EXIT
+
+############################################################
 echo Checking prerequisites
 
 required_packages="squashfs-tools xorriso casper lupin-casper"
@@ -13,37 +22,25 @@ done
 if [ ! -z "${missing_packages}" ]; then
 	echo "Installing missing package ${missing_packages}"
 	sudo apt -y install ${missing_packages}
-	if [[ $? != 0 ]]; then
-		echo "Failed to install missing packages" >&2
-		exit 1;
-	fi
 fi
 
 ############################################################
-echo Setting up working directory
+read -ep "Enter working directory (/tmp/liveCD/): " working_dir
 
 if [ -z "${working_dir}" ]; then
-	read -ep "Enter working directory (/tmp/liveCD/): " working_dir
-	if [ -z "${working_dir}" ]; then
-		working_dir="/tmp/liveCD"
-	fi
+    working_dir="/tmp/liveCD"
 fi
 working_dir=$(realpath ${working_dir})
-echo ${working_dir}
 
 ############################################################
+read -ep "Where would you like to save the iso file? (${working_dir}/liveCD.iso)" iso_path
 
 if [ -z "${iso_path}" ]; then
-	read -ep "Where would you like to save the iso file? (${working_dir}/liveCD.iso)" iso_path
-	if [ -z "${iso_path}" ]; then
-		iso_path=${working_dir}/liveCD.iso
-	fi
+    iso_path=${working_dir}/liveCD.iso
 fi
 
 ############################################################
-if [ -z "${hostname}" ]; then
-	read -p "Enter hostname for LiveCD: " hostname
-fi
+read -p "Enter hostname for LiveCD: " hostname
 
 ############################################################
 
@@ -53,6 +50,10 @@ reserved_user=$(getent passwd "999" | cut -d: -f1)
 if [[ ! -z ${reserved_user} ]]; then
 	echo User \"${reserved_user}\" is occupying the reserved ID 999
 	echo Deleting user \"${reserved_user}\"
+
+    # Disable exit-on-error since this can be ignored
+    set +e
+
 	sudo userdel ${reserved_user}
 	if [[ $? != 0 ]]; then
 		echo Fails to delete user ${reserved_user}
@@ -64,24 +65,23 @@ if [[ ! -z ${reserved_user} ]]; then
 			esac
 		done
 	fi
+
+    # Re-enable exit-on-error
+    set -e
 fi
 
 ############################################################
 # Setting up variables
 
-src_dir=${working_dir}/rootfs							# Source directory for LiveCD files. Files are sync with `/` prior to squashing
-livecd_dir=${working_dir}/liveCD					 # Directory storing LiveCD boot loaders.
-excluded_list_file=${working_dir}/excluded # Files containing a list of excluded files for rsync operation
+src_dir=${working_dir}/rootfs               # Source directory for LiveCD files. Files are sync with `/` prior to squashing
+livecd_dir=${working_dir}/liveCD            # Directory storing LiveCD boot loaders.
+excluded_list_file=${working_dir}/excluded  # Files containing a list of excluded files for rsync operation
 
-FORMAT=squashfs														# File extension for the squashed LiveCD
-casper_fs=casper													 # Boot loader
+FORMAT=squashfs                             # File extension for the squashed LiveCD
+casper_fs=casper                            # Boot loader
 
 # Create working directory
 mkdir -p "${src_dir}" ${livecd_dir}/{${casper_fs},boot/grub}
-if [[ $? != 0 ]]; then
-	echo "Fails to create ${src_dir} or ${livecd_dir}"
-	exit 1
-fi
 
 ############################################################
 echo Cleaning up some space
@@ -126,11 +126,10 @@ EOF
 ############################################################
 echo Creating source directory
 
-# Create source directory, and add them to excluded list
-mkdir -p ${src_dir}
+# Add source directory to excluded list
 echo "${src_dir}" >> ${excluded_list_file}
 # Copy everything to source directory
-sudo rsync -a --info=progress2 --exclude-from="${excluded_list_file}" --one-file-system "/" "${src_dir}" --delete || ( echo "An error occured during rsync!"; exit 1; )
+sudo rsync -a --info=progress2 --exclude-from="${excluded_list_file}" --one-file-system "/" "${src_dir}" --delete
 # To include boot options, uncomment the following line
 # sudo rsync -a --info-progress2 /boot/grub/grub.cfg "${src_dir}/boot/grub/grub.cfg"
 
@@ -154,11 +153,11 @@ echo "${hostname}" | sudo tee >/dev/null "${hostname_file}"
 ############################################################
 # We need to update initial ram disk for changes to casper and hostname to take effect
 
-# Prepare for chroot
-sudo mount --bind /dev/ ${src_dir}/dev || ( echo "An error occured while mouting /dev for chroot"; exit 1; )
-sudo mount -t proc proc ${src_dir}/proc || ( echo "An error occured while mouting /proc for chroot"; exit 1; )
-sudo mount -t sysfs sysfs ${src_dir}/sys || ( echo "An error occured while mouting /sys for chroot"; exit 1; )
-sudo mount -o bind /run ${src_dir}/run || ( echo "error occured while mouting /run for chroot"; exit 1; )
+# Mount virtual file systems for chroot
+sudo mount --bind /dev/ ${src_dir}/dev
+sudo mount -t proc proc ${src_dir}/proc
+sudo mount -t sysfs sysfs ${src_dir}/sys
+sudo mount -o bind /run ${src_dir}/run
 
 # May take some time for mounts to appear
 sleep 1
@@ -169,7 +168,7 @@ cat <<EOF | sudo chroot ${src_dir} /bin/bash
 update-initramfs -u -k $(uname -r)
 EOF
 
-# chroot complete - umount
+# Unmount virtual file systems
 sudo umount ${src_dir}/proc
 sudo umount ${src_dir}/sys
 sudo umount ${src_dir}/dev
@@ -180,13 +179,13 @@ echo Squashing source directory ${src_dir}
 
 rm -f "${livecd_dir}/${casper_fs}/filesystem.${FORMAT}"
 sudo mksquashfs "${src_dir}" "${livecd_dir}/${casper_fs}/filesystem.${FORMAT}" -noappend
-# add fs size information
+# Add size information for the file system
 echo -n $(sudo du -s --block-size=1 ${src_dir} | tail -1 | awk '{print $1}') > ${livecd_dir}/${casper_fs}/filesystem.size
 
 ############################################################
 export KERNEL_VER=`cd ${src_dir}/boot && ls -1 vmlinuz-* | tail -1 |sed 's@vmlinuz-@@'`
 if [[ -z ${KERNEL_VER} ]]; then
-	echo Cannot ascertain kernel version
+	>&2 echo Cannot ascertain kernel version
 	exit 1
 fi
 
@@ -225,6 +224,7 @@ EOF
 
 ############################################################
 echo Creating ISO file
+
 rm -f "${iso_path}"
 sudo grub-mkrescue -o "${iso_path}" ${livecd_dir}
 

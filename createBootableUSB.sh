@@ -18,7 +18,16 @@ done
 
 ############################################################
 read -ep "Please enter the path to the ISO file: " iso_src
+
 if [ ! -f ${iso_src} ]; then
+    echo "Cannot find an ISO file at ${iso_src}. Exiting"
+    exit 1
+fi
+
+############################################################
+read -ep "Please enter name for the new partition: (LAB_LIVE_DISK) " partition_name
+
+if [ ! -f ${partition_name} ]; then
     echo "Cannot find an ISO file at ${iso_src}. Exiting"
     exit 1
 fi
@@ -48,7 +57,7 @@ sudo parted "${disk}" mklabel msdos
 # The first 512B are reserved for GRUB, the rest are for alignment
 sudo parted "${disk}" mkpart primary fat32 1M 100% -a optimal
 # Create MSDOS file system named "LAB_LIVE_DISK"
-sudo mkfs.vfat -n "LAB_LIVE_DISK" "${disk}1"
+sudo mkfs.vfat -n "${partition_name}" "${disk}1"
 
 ############################################################
 echo "Installing GRUB"
