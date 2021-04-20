@@ -42,12 +42,12 @@ Proceed as follows:
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flashdrive. Once the flashdrive is created, delete the *Build VM*.   
 
 ### 3.2  Run script that creates ISO image 
-The shelll script `MakeliveCD.sh` creates an .iso image (“root.iso”) from the current virtual machine. 
+The shelll script `makeLiveCD.sh` creates an .iso image (“root.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
 
 ```$ sudo bash makeLiveCD.sh```
 
-The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/root.iso`. 
+The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
 
 ## 4. Create a bootable flashdrive with LiveCD 
 a.  Insert a flashdrive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flashdrive must be mounted in the Ubuntu VM. 
