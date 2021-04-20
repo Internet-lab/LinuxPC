@@ -13,6 +13,7 @@ During the installation, use the default settings.
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
  * Agree to the installation of OpenSSH server
+ * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check that the (virtual) optical drive containing the .iso file is removed. Then start the VM.  
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
@@ -42,7 +43,11 @@ Proceed as follows:
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flashdrive. Once the flashdrive is created, delete the *Build VM*.   
 
 ### 3.2  Run script that creates ISO image 
-The shelll script `makeLiveCD.sh` creates an .iso image (“root.iso”) from the current virtual machine. 
+Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
+
+```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh```
+
+The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
 
 ```$ sudo bash makeLiveCD.sh```
