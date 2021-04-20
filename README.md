@@ -45,7 +45,7 @@ Proceed as follows:
 The shelll script `MakeliveCD.sh` creates an .iso image (“root.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
 
-```$ sudo bash makeliveCD.sh```
+```$ sudo bash makeLiveCD.sh```
 
 The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/root.iso`. 
 
