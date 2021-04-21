@@ -13,6 +13,8 @@ Go to `Settings→Ports→USB` and select `USB 3.0 Controller`.
 
 c. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
 
+There are excellent instructions available at https://hibbard.eu/install-ubuntu-virtual-box/ . Follow the instructions until you get to *"Up and Running with SSH"*.
+
 d. During the installation, use the default settings. 
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
