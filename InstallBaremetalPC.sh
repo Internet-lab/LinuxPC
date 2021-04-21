@@ -22,15 +22,6 @@ sudo apt update
 sudo apt -y install mousepad -y
 sudo apt autoremove --purge byobu -y
 #--------------------- (V04) ---------------------
-cat <<EOF > /etc/rc.local
-#!/bin/sh -e
-#
-# rc.local
-#
-sudo hostname PC1 
-exit 0
-EOF
-#------------------------------------------
 # interface configuraiton added 
 #------------------------------------------
 cat <<EOF > /etc/netplan/00-installer-config.yaml 
