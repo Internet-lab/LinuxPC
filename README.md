@@ -51,8 +51,7 @@ Proceed as follows:
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `LXTerminal`, `Files`,  and `Mousepad`.
-  - Make sure that you have an interface running:
-    - Check interface name by typing `ip link`. Then enable the network interface (say with name enp0s3) and start a DHCP client with 
+  - If you need a network interface, check interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name enp0s3) and start a DHCP client with 
 
      ```$ sudo ifconfig enp0s3 up```
      
