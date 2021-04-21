@@ -94,7 +94,7 @@ echo Creating Excluded List
 # Set excluded list to ignore non-file paths, like mounting points, device directories, etc.
 # Also excludes this script and files that will change when the script is running, e.g., bash history.
 cat > ${excluded_list_file} <<EOF
-/boot/grub/*
+/boot/*
 /dev/*
 /etc/fstab
 /etc/mtab
@@ -106,6 +106,7 @@ cat > ${excluded_list_file} <<EOF
 /mnt/*
 /proc/*
 /root/*
+/swap.img
 /sys/*
 /tmp/*
 /var/mail*
@@ -129,9 +130,27 @@ echo Creating source directory
 # Add source directory to excluded list
 echo "${src_dir}" >> ${excluded_list_file}
 # Copy everything to source directory
-sudo rsync -a --info=progress2 --exclude-from="${excluded_list_file}" --one-file-system "/" "${src_dir}" --delete
+sudo rsync -a --info=progress2 --exclude-from="${excluded_list_file}" --one-file-system "/" "${src_dir}" --delete --delete-excluded
 # To include boot options, uncomment the following line
 # sudo rsync -a --info-progress2 /boot/grub/grub.cfg "${src_dir}/boot/grub/grub.cfg"
+
+############################################################
+echo Deleting extraneous files from user directories
+
+# TODO: Find a way to synchronize only folder structures (with permission & owner), so that we don't need to resort to deleting them after the fact.
+
+for user_dir in ${src_dir}/home/*; do
+    for dir in ${user_dir}/*; do
+        case ${dir} in
+        *Desktop|*Downloads|*Pictures|*Templates|*Videos|*Documents|*Music|*Public )
+            sudo rm -rf ${dir}/*
+            continue;;
+        * )
+            sudo rm -rf ${dir}
+            continue;;
+        esac
+    done
+done
 
 ############################################################
 echo Configuring Casper
@@ -151,6 +170,17 @@ hostname_file=${src_dir}/etc/hostname
 echo "${hostname}" | sudo tee >/dev/null "${hostname_file}"
 
 ############################################################
+export KERNEL_VER=`uname -r`
+if [[ -z ${KERNEL_VER} ]]; then
+    >&2 echo Cannot ascertain kernel version
+    exit 1
+fi
+
+echo Copying kernel: ${KERNEL_VER}
+sudo cp -p /boot/vmlinuz-${KERNEL_VER} ${livecd_dir}/${casper_fs}/
+sudo cp -p /boot/initrd.img-${KERNEL_VER} ${livecd_dir}/${casper_fs}/
+
+############################################################
 # We need to update initial ram disk for changes to casper and hostname to take effect
 
 # Mount virtual file systems for chroot
@@ -158,6 +188,7 @@ sudo mount --bind /dev/ ${src_dir}/dev
 sudo mount -t proc proc ${src_dir}/proc
 sudo mount -t sysfs sysfs ${src_dir}/sys
 sudo mount -o bind /run ${src_dir}/run
+sudo mount -o bind ${livecd_dir}/${casper_fs} ${src_dir}/boot
 
 # May take some time for mounts to appear
 sleep 1
@@ -165,7 +196,7 @@ sleep 1
 # (chroot)
 cat <<EOF | sudo chroot ${src_dir} /bin/bash
 # update initrd
-update-initramfs -u -k $(uname -r)
+update-initramfs -u -k ${KERNEL_VER}
 EOF
 
 # Unmount virtual file systems
@@ -173,6 +204,13 @@ sudo umount ${src_dir}/proc
 sudo umount ${src_dir}/sys
 sudo umount ${src_dir}/dev
 sudo umount ${src_dir}/run
+sudo umount ${src_dir}/boot
+
+############################################################
+echo Renaming kernel and initial ramdisk files
+
+sudo mv "${livecd_dir}/${casper_fs}/vmlinuz-${KERNEL_VER}" "${livecd_dir}/${casper_fs}/vmlinuz"
+sudo mv "${livecd_dir}/${casper_fs}/initrd.img-${KERNEL_VER}" "${livecd_dir}/${casper_fs}/initrd"
 
 ############################################################
 echo Squashing source directory ${src_dir}
@@ -181,17 +219,6 @@ rm -f "${livecd_dir}/${casper_fs}/filesystem.${FORMAT}"
 sudo mksquashfs "${src_dir}" "${livecd_dir}/${casper_fs}/filesystem.${FORMAT}" -noappend
 # Add size information for the file system
 echo -n $(sudo du -s --block-size=1 ${src_dir} | tail -1 | awk '{print $1}') > ${livecd_dir}/${casper_fs}/filesystem.size
-
-############################################################
-export KERNEL_VER=`cd ${src_dir}/boot && ls -1 vmlinuz-* | tail -1 |sed 's@vmlinuz-@@'`
-if [[ -z ${KERNEL_VER} ]]; then
-	>&2 echo Cannot ascertain kernel version
-	exit 1
-fi
-
-echo Copying kernel: ${KERNEL_VER}
-sudo cp -p ${src_dir}/boot/vmlinuz-${KERNEL_VER} ${livecd_dir}/${casper_fs}/vmlinuz
-sudo cp -p ${src_dir}/boot/initrd.img-${KERNEL_VER} ${livecd_dir}/${casper_fs}/initrd
 
 ############################################################
 echo Computing checksum
