@@ -39,7 +39,7 @@ c. Execute the script with the command
 ## 3. Create an ISO LiveCD image
 The next step creates a LiveCD ISO image, which has the same configurationas the customized Ubuntu server. 
 
-### 3.1  **(Optional)** Avoid increasing the size of VM when creating a new LiveCD.
+### 3.1  **(Optional, but highly recommended)** Avoid increasing the size of VM when creating a new LiveCD.
 
 The  creation of a  LiveCD from a VM   expands the size of the virtual machine substantially. The reason is that for the creation of the ISO image, large parts of the Master VM are copied in a temporary directory. For this, the virtual disk of the Master VM is dynamically increased. To avoid increasing the size of the original VM of the Ubuntu server from Step 2 (*Install software on Ubuntu server*), create a copy of  VM. We call the original VM the *Master VM* and the copied VM the *Build VM*. 
 Proceed as follows: 
