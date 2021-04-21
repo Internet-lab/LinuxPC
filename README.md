@@ -67,6 +67,10 @@ Proceed as follows:
 
 ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
 
+  - Just before running the script clear the history of bash commands (to prevent that they arecopied to the liveCD) with
+   
+   ```$ history -c```
+   
   - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
 
