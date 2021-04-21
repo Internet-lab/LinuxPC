@@ -23,6 +23,7 @@ Consider the following points during the installation:
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
+
 b. From the home directory of `labuser` download the script *InstallBaremetalPC.sh* using the command 
 
 ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh```
@@ -36,6 +37,12 @@ c. Execute the script with the command
  - The script also downloads the shell scripts `makeLiveCD.sh` and `createBootableUSB.sh` used for the creation of the LiveCD.
  - The script reboots the OS, when the system reboots it will show a login screen of the Gnome Desktop. Login as `labuser` and verify that the software installation is completed. 
 
+d. Touch up the VM 
+  - If not already logged in, start the (Build) VM and log in as `labuser`.
+  - Change the screen background. There are templates available for PC1, PC2, ...
+  - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
+  - Change power saving mode to prevent computer from locking screen after idle period.
+
 ## 3. Create an ISO LiveCD image
 The next step creates a LiveCD ISO image, which has the same configurationas the customized Ubuntu server. 
 
@@ -47,22 +54,10 @@ Proceed as follows:
  - Repeat Step 1b, i.e., selecting `USB 3.0 Controller` for the *Build VM*.
  - Start the *Build VM* and log in as `labuser'.
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. 
- - Once the flash drive is created, delete the *Build VM*.   
- 
-### 3.2  Touch up the VM 
-  - If not already logged in, start the (Build) VM and log in as `labuser`.
-  - Change the screen background. There are templates available for PC1, PC2, ...
-  - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
-  - Change power saving mode to prevent computer from locking screen after idle period.
-  
+ - Once the flash drive is created, delete the *Build VM*.     
 
-### 3.3. Insert flash drive
-Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
-Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
-
-
-### 3.4  Run script that creates ISO image 
-  - Check if the Build VM has Internet access. If not, check the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name enp0s3) and start a DHCP client with 
+### 3.2  Run script that creates ISO image 
+  - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
 
      ```$ sudo ifconfig enp0s3 up```
      
@@ -81,19 +76,23 @@ The script asks a few times for information. If you do not know otherwise, selec
 
 **Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
+
+
 ## 4. Create a bootable flash drive with LiveCD 
-a.  Check that the  flash drive from Step 3.3 nto a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
+
+### 4.1 Insert flash drive
+Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtualbox is running. The flash drive must be mounted in the *Build VM*. 
 Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
 
-Another reason that the  flash drive does not mount is that the flash drive requires USB 3.0, and the Virtualbox VM is not configured for this. In this case, you have to shutdown Ubuntu, and in Virtualbox select "Settings->Port->USB" and select `USB3.0 Controller`. Then, insert the flash drive again and see if it is mounted. 
+### 4.2 Install LiveCD on flash drive
 
-b. Identify the device name of the flash drive with the command 
+a. Identify the device name of the flash drive with the command 
 
 ```$ sudo lsblk -p```
 
 Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /dev/sdc or /dev/sdc1). 
 
-c. From the home directory of `labuser`, run the script with the command 
+b. From the home directory of `labuser`, run the script with the command 
 
 ```$ sudo bash createBootableUSB.sh```
 
