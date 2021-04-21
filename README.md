@@ -22,7 +22,7 @@ c. During the installation, use the default settings.
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
-b. From the home directory of `labuser` download the script "InstallBaremetalPC.sh" using the command 
+b. From the home directory of `labuser` download the script *InstallBaremetalPC.sh* using the command 
 
 ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh```
 
@@ -67,7 +67,7 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 ### 3.4  Run script that creates ISO image 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
-```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh```
+```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
 
   - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
