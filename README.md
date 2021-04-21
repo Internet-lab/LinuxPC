@@ -15,12 +15,11 @@ c. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox
 
 There are excellent instructions available at https://hibbard.eu/install-ubuntu-virtual-box/ . Follow the instructions until you get to *"Up and Running with SSH"*.
 
-d. During the installation, use the default settings. 
+During the installation, use the default settings. 
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
  * Agree to the installation of OpenSSH server
- * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check that the (virtual) optical drive containing the .iso file is removed. If not, remove it. Then re
- * start the VM.  
+ * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check that the (virtual) optical drive containing the .iso file is removed. If not, remove it. Then restart the VM.  
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
