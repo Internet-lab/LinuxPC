@@ -5,17 +5,17 @@ The process described here assumes that the installation is done in Virtualbox o
 
 Version:  April 2021
 ## 1. Install Ubuntu server 
-a. Download Ubuntu Server 20.04 LTS from 
-https://ubuntu.com/download/server
+For installing Ubuntu server in Virtualbox, there are excellent instructions available at https://hibbard.eu/install-ubuntu-virtual-box/ . Follow the instructions until you get to *"Up and Running with SSH"*. 
 
-b. Create a new VM. If you start the name with "Ubu", Virtualbox automatically selects *Ubuntu (64-bit)*. Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
-Go to `Settings→Ports→USB` and select `USB 3.0 Controller`. 
+Consider the following points during the installation:
 
-c. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
+ a. Download Ubuntu Server 20.04 LTS from https://ubuntu.com/download/server
 
-There are excellent instructions available at https://hibbard.eu/install-ubuntu-virtual-box/ . Follow the instructions until you get to *"Up and Running with SSH"*.
+ b. Create a new VM. If you start the name with "Ubu", Virtualbox automatically selects *Ubuntu (64-bit)*. Go to `Settings→Ports→USB` and select `USB 3.0 Controller`. 
 
-During the installation, use the default settings. 
+ c. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
+
+ During the installation, use the default settings. 
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
  * Agree to the installation of OpenSSH server
