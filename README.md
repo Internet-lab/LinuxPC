@@ -8,12 +8,17 @@ Version:  April 2021
 a. Download Ubuntu Server 20.04 LTS from 
 https://ubuntu.com/download/server
 
-b. Install the Ubuntu server as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
-During the installation, use the default settings. 
+a. Create a new VM. If you start the name with "Ubu", Virtualbox automatically selects *Ubuntu (64-bit)*. Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
+Go to `Settings→Ports→USB' and select `USB 3.0 Controller'. 
+
+b. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
+
+c. During the installation, use the default settings. 
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
  * Agree to the installation of OpenSSH server
- * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check that the (virtual) optical drive containing the .iso file is removed. Then start the VM.  
+ * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check that the (virtual) optical drive containing the .iso file is removed. If not, remove it. Then re
+ * start the VM.  
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
@@ -56,9 +61,8 @@ Proceed as follows:
 Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
 Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
 
-Another reason that the  flash drive does not mount is that the flash drive requires USB 3.0, and the Virtualbox VM is not configured for this. In this case, you have to shutdown Ubuntu, and in Virtualbox select "Settings->Port->USB" and select `USB3.0 Controller`. Then, insert the flash drive again and see if it is mounted. 
 
-*Comment: The reason to check the flash drive at this time is that changing the USB 3.0 controller requires to shut down the VM. SInce the ISO image (in  Step 3.4) is written to a temporary directory, the ISO image is vanished after a reboot.*
+
 
 ### 3.4  Run script that creates ISO image 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
