@@ -48,6 +48,7 @@ Proceed as follows:
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. Once the flash drive is created, delete the *Build VM*.   
 
 ### 3.2  Touch up the VM 
+  - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Make sure that you have an interface running:
