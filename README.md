@@ -54,11 +54,7 @@ Proceed as follows:
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change power saving mode to prevent computer from locking screen after idle period.
-  - Make sure you have Internet access. If not, check the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name enp0s3) and start a DHCP client with 
-
-     ```$ sudo ifconfig enp0s3 up```
-     
-     ```$ sudo dhclient enp0s3```
+  
 
 ### 3.3. Insert flash drive
 Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
@@ -66,6 +62,12 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 
 
 ### 3.4  Run script that creates ISO image 
+  - Check if the Build VM has Internet access. If not, check the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name enp0s3) and start a DHCP client with 
+
+     ```$ sudo ifconfig enp0s3 up```
+     
+     ```$ sudo dhclient enp0s3```
+     
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
 ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
