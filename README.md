@@ -46,9 +46,9 @@ Proceed as follows:
  - After making changes to the VM  (running InstallBaremetalPC.sh or installing/removing packages), create a clone of the VM. The clone becomes the *Build VM*. 
  - Repeat Step 1b, i.e., selecting `USB 3.0 Controller` for the *Build VM*.
  - Start the *Build VM* and log in as `labuser'.
- - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. Once the flash drive is created, delete the *Build VM*.   
- - After the scripts are executed (Steps 3.4 and 4) delete the *Build VM*.
-
+ - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. 
+ - Once the flash drive is created, delete the *Build VM*.   
+ 
 ### 3.2  Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
