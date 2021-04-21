@@ -8,12 +8,12 @@ Version:  April 2021
 a. Download Ubuntu Server 20.04 LTS from 
 https://ubuntu.com/download/server
 
-a. Create a new VM. If you start the name with "Ubu", Virtualbox automatically selects *Ubuntu (64-bit)*. Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
-Go to `Settings→Ports→USB' and select `USB 3.0 Controller'. 
+b. Create a new VM. If you start the name with "Ubu", Virtualbox automatically selects *Ubuntu (64-bit)*. Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
+Go to `Settings→Ports→USB` and select `USB 3.0 Controller`. 
 
-b. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
+c. Install the Ubuntu server from the downloaded .iso file as a VM in Virtualbox (the development was done with Virtualbox 6.1). Allocate min. 2048 MB memory and min. 20 GB for the virtual disk.
 
-c. During the installation, use the default settings. 
+d. During the installation, use the default settings. 
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
  * Agree to the installation of OpenSSH server
@@ -44,6 +44,7 @@ The  creation of a  LiveCD from a VM   expands the size of the virtual machine s
 Proceed as follows: 
  - After making changes to the VM  (running InstallBaremetalPC.sh or installing/removing packages), export the VM using “Export Appliance” in Virtualbox. The exported appliance is saved as an OVF file. 
  - Import the exported appliance to create a new VM. We call this version the *Build VM*. 
+ - Repeat Step 1b, i.e., selecting `USB 3.0 Controller` for the *Build VM*.
  - Start the *Build VM* and log in as `labuser'.
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. Once the flash drive is created, delete the *Build VM*.   
 
@@ -57,7 +58,7 @@ Proceed as follows:
      
      ```$ sudo dhclient enp0s3```
 
-## 3.3. Insert flash drive
+### 3.3. Insert flash drive
 Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
 Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
 
