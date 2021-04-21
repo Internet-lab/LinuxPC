@@ -52,7 +52,7 @@ Proceed as follows:
 ### 3.2  Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
-  - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `LXTerminal`, `Files`,  and `Mousepad`.
+  - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change power saving mode to prevent computer from locking screen after idle period.
   
 
