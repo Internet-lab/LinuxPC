@@ -40,25 +40,45 @@ Proceed as follows:
  - After making changes to the VM  (running InstallBaremetalPC.sh or installing/removing packages), export the VM using “Export Appliance” in Virtualbox. The exported appliance is saved as an OVF file. 
  - Import the exported appliance to create a new VM. We call this version the *Build VM*. 
  - Start the *Build VM* and log in as `labuser'.
- - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flashdrive. Once the flashdrive is created, delete the *Build VM*.   
+ - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. Once the flash drive is created, delete the *Build VM*.   
 
-### 3.2  Run script that creates ISO image 
-Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
+### 3.2  Touch up the VM 
+  - Change the screen background. There are templates available for PC1, PC2, ...
+  - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `LXTerminal`, `Files`,  and `Mousepad`.
+  - Make sure that you have an interface running:
+    - Check interface name by typing `ip link`. Then enable the network interface (say with name enp0s3) and start a DHCP client with 
+
+     ```$ sudo ifconfig enp0s3 up```
+     
+     ```$ sudo dhclient enp0s3```
+
+## 3.3. Insert flash drive
+Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
+Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
+
+Another reason that the  flash drive does not mount is that the flash drive requires USB 3.0, and the Virtualbox VM is not configured for this. In this case, you have to shutdown Ubuntu, and in Virtualbox select "Settings->Port->USB" and select `USB3.0 Controller`. Then, insert the flash drive again and see if it is mounted. 
+
+*Comment: The reason to check the flash drive at this time is that changing the USB 3.0 controller requires to shut down the VM. SInce the ISO image (in  Step 3.4) is written to a temporary directory, the ISO image is vanished after a reboot.*
+
+### 3.4  Run script that creates ISO image 
+  - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
 ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh```
 
-The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
+  - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
 
 ```$ sudo bash makeLiveCD.sh```
 
 The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
 
-## 4. Create a bootable flashdrive with LiveCD 
-a.  Insert a flashdrive (min. 16 GB) into a USB port of the computer where Virtual with the VM from Step 3 is running. The flashdrive must be mounted in the Ubuntu VM. 
-Sometimes the Ubuntu VM is unable to grab the flashdrive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flashdrive. Then removing and re-inserting the flashdrive should show it in the Ubuntu VM. 
+## 4. Create a bootable flash drive with LiveCD 
+a.  Check that the  flash drive from Step 3.3 nto a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
+Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
 
-b. Identify the device name of the flashdrive with the command 
+Another reason that the  flash drive does not mount is that the flash drive requires USB 3.0, and the Virtualbox VM is not configured for this. In this case, you have to shutdown Ubuntu, and in Virtualbox select "Settings->Port->USB" and select `USB3.0 Controller`. Then, insert the flash drive again and see if it is mounted. 
+
+b. Identify the device name of the flash drive with the command 
 
 ```$ sudo lsblk -p```
 
@@ -68,28 +88,28 @@ c. From the home directory of `labuser`, run the script with the command
 
 ```$ sudo bash createBootableUSB.sh```
 
-The script will prompt for hardware specific information. In particular, the script requests to enter the device name of the flashdrive (`/dev/sdb`).
-Once the script is completed, remove the flashdrive.  The flashdrive contains  the ISO image (`root.iso`) and grub configuration files.
+The script will prompt for hardware specific information. In particular, the script requests to enter the device name of the flash drive (`/dev/sdb`).
+Once the script is completed, remove the flash drive.  The flash drive contains  the ISO image (`root.iso`) and grub configuration files.
 
 ## 5. Copying the LiveCD to the hard drive 
-The LiveCD can be run on a target machine from the flashdrive. This assumes that the BIOS is set so that the system first tries to boot from a flashdrive. 
+The LiveCD can be run on a target machine from the flash drive. This assumes that the BIOS is set so that the system first tries to boot from a flash drive. 
 
 
 >**Note: Copying the LiveCD to the hard drive will delete all partitions on the hard disk. All data on the hard disk will be lost.**
 
-a. Insert the flashdrive from Step 4 into the target system. Rebooting the target system starts  the LiveCD. Log in as `labuser`.
+a. Insert the flash drive from Step 4 into the target system. Rebooting the target system starts  the LiveCD. Log in as `labuser`.
 
-b. Identify the device names of the flashdrive and the hard disk on the target system.  
+b. Identify the device names of the flash drive and the hard disk on the target system.  
 
 ```$ sudo lsblk -p```
 
-In many cases the hard disk is `/dev/sda` and the inserted flashdrive is `/dev/sdb`. Verify that this is the case. Otherwise, take not of the device names.  
+In many cases the hard disk is `/dev/sda` and the inserted flash drive is `/dev/sdb`. Verify that this is the case. Otherwise, take not of the device names.  
 
-c. Make sure that the storage capacity of the hard disk is as least that of the flashdrive.  Then, assuming that `/dev/sdb is the flashdrive and `/dev/sda` is the hard disk, copy the flashdrive to the hard disk with the command 
+c. Make sure that the storage capacity of the hard disk is as least that of the flash drive.  Then, assuming that `/dev/sdb is the flash drive and `/dev/sda` is the hard disk, copy the flash drive to the hard disk with the command 
 
 ```$ sudo dd if=/dev/sdb of=/dev/sda```
 
 The command  take considerable time to complete. 
 
-d. Remove the flashdrive and reboot the target machine. 
+d. Remove the flash drive and reboot the target machine. 
 
