@@ -43,11 +43,11 @@ The next step creates a LiveCD ISO image, which has the same configurationas the
 
 The  creation of a  LiveCD from a VM   expands the size of the virtual machine substantially. The reason is that for the creation of the ISO image, large parts of the Master VM are copied in a temporary directory. For this, the virtual disk of the Master VM is dynamically increased. To avoid increasing the size of the original VM of the Ubuntu server from Step 2 (*Install software on Ubuntu server*), create a copy of  VM. We call the original VM the *Master VM* and the copied VM the *Build VM*. 
 Proceed as follows: 
- - After making changes to the VM  (running InstallBaremetalPC.sh or installing/removing packages), export the VM using “Export Appliance” in Virtualbox. The exported appliance is saved as an OVF file. 
- - Import the exported appliance to create a new VM. We call this version the *Build VM*. 
+ - After making changes to the VM  (running InstallBaremetalPC.sh or installing/removing packages), create a clone of the VM. The clone becomes the *Build VM*. 
  - Repeat Step 1b, i.e., selecting `USB 3.0 Controller` for the *Build VM*.
  - Start the *Build VM* and log in as `labuser'.
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. Once the flash drive is created, delete the *Build VM*.   
+ - After the scripts are executed (Steps 3.4 and 4) delete the *Build VM*.
 
 ### 3.2  Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
@@ -65,8 +65,6 @@ Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtual 
 Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
 
 
-
-
 ### 3.4  Run script that creates ISO image 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
@@ -78,6 +76,8 @@ From the home directory of `labuser`, run the script with the command
 ```$ sudo bash makeLiveCD.sh```
 
 The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
+
+**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
 ## 4. Create a bootable flash drive with LiveCD 
 a.  Check that the  flash drive from Step 3.3 nto a USB port of the computer where Virtual with the VM from Step 3 is running. The flash drive must be mounted in the Ubuntu VM. 
