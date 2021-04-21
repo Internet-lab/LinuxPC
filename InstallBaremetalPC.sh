@@ -16,6 +16,7 @@ sudo apt-get upgrade
 # install gnome and lxterminal 
 sudo apt update
 sudo apt -y install gnome-session lxterminal
+sudo apt -y install gnome-screenshot
 
 sudo apt update
 sudo apt -y install mousepad -y
