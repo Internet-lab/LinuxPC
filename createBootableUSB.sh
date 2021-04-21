@@ -7,6 +7,11 @@ y=`echo ${disk} | cut -d'/' -f3`
 y=`echo ${y:0:3}`
 disk=`echo "/$x/$y"`
 
+if [ ! -e "${disk}" ]; then
+    echo "Cannot find disk ${disk}. Exiting"
+    exit 1
+fi
+
 while :; do
 	read -p "Disk ${disk} was selected. Continue? [yn] " answer
 	case ${answer} in
@@ -17,19 +22,27 @@ while :; do
 done
 
 ############################################################
-read -ep "Please enter the path to the ISO file: " iso_src
 
-if [ ! -f ${iso_src} ]; then
-    echo "Cannot find an ISO file at ${iso_src}. Exiting"
-    exit 1
-fi
+while :; do
+    read -ep "Please enter the path to the ISO file: (default: /tmp/liveCD/liveCD.iso) " iso_src
+    iso_src="${iso_src/#\~/$HOME}"
+
+    if [ -z "${iso_src}" ]; then
+        iso_src="/tmp/liveCD/liveCD.iso"
+    fi
+
+    if [ ! -f "${iso_src}" ]; then
+        echo "Cannot find an ISO file at ${iso_src}."
+    else
+        break
+    fi
+done
 
 ############################################################
-read -ep "Please enter name for the new partition: (LAB_LIVE_DISK) " partition_name
+read -ep "Please enter name for the new partition: (default: LAB_LIVE_DISK) " partition_name
 
-if [ ! -f ${partition_name} ]; then
-    echo "Cannot find an ISO file at ${iso_src}. Exiting"
-    exit 1
+if [ -z "${partition_name}" ]; then
+    partition_name="LAB_LIVE_DISK"
 fi
 
 ############################################################
@@ -56,7 +69,10 @@ sudo parted "${disk}" mklabel msdos
 # Create FAT32 partition starting at 1024-bytes, and ends at the end of the disk (100%)
 # The first 512B are reserved for GRUB, the rest are for alignment
 sudo parted "${disk}" mkpart primary fat32 1M 100% -a optimal
-# Create MSDOS file system named "LAB_LIVE_DISK"
+
+# May take some time for the partition to appear
+sleep 3
+# Create MSDOS file system named "{partition_name}"
 sudo mkfs.vfat -n "${partition_name}" "${disk}1"
 
 ############################################################
