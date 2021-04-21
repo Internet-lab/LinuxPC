@@ -43,7 +43,7 @@ The next step creates a LiveCD ISO image, which has the same configurationas the
 
 The  creation of a  LiveCD from a VM   expands the size of the virtual machine substantially. The reason is that for the creation of the ISO image, large parts of the Master VM are copied in a temporary directory. For this, the virtual disk of the Master VM is dynamically increased. To avoid increasing the size of the original VM of the Ubuntu server from Step 2 (*Install software on Ubuntu server*), create a copy of  VM. We call the original VM the *Master VM* and the copied VM the *Build VM*. 
 Proceed as follows: 
- - After making changes to the VM  (running InstallBaremetalPC.sh or installing/removing packages), create a clone of the VM. The clone becomes the *Build VM*. 
+ - After making changes to the *Master VM*  (running InstallBaremetalPC.sh or installing/removing packages), create a clone of the VM. The clone becomes the *Build VM*. 
  - Repeat Step 1b, i.e., selecting `USB 3.0 Controller` for the *Build VM*.
  - Start the *Build VM* and log in as `labuser'.
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. 
