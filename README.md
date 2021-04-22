@@ -19,7 +19,7 @@ Consider the following points during the installation:
 
  * For the user name password, select **Name: `Labuser`, username: `labuser`, password: `labuser`**.
  * Agree to the installation of OpenSSH server
- * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check that the (virtual) optical drive containing the .iso file is removed. If not, remove it. Then restart the VM.  
+ * Once the installation is complete, Ubuntu often does not reboot. In this case, force a shut down from Virtualbox. Then check in Virtualbox that the (virtual) optical drive containing the .iso file is removed. If not, remove it.   
 
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
