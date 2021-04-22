@@ -245,7 +245,7 @@ sudo apt -y install  wireshark
 # The next command allows to reconfigure the setting 
 sudo usermod -aG wireshark labuser
 # Answer YES when prompted
-sudo dpkg-reconfigure wireshark-common  
+# sudo dpkg-reconfigure wireshark-common  
 # sudo usermod -aG vboxsf labuser    <--- does not exist in this install
 
 # ---------------------------------------
