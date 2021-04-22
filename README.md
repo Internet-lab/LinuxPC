@@ -46,7 +46,7 @@ d. Touch up the VM
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
-  - Change the power saving mode to prevent that the system locks  the screen after an idle period.
+  - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Ports`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
   - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
 
 ## 3. Create an ISO LiveCD image
@@ -62,7 +62,7 @@ Proceed as follows:
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. 
  - Once the flash drive is created, delete the *Build VM*.     
 
->**Hint:** Create four BuildVM, one for each PC (PC1, PC2, PC3, PC4), and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
+>**Hint:** Create four BuildVMs, one for each PC (PC1, PC2, PC3, PC4) and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
 
 ### 3.2  Run script that creates ISO image 
   - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
@@ -111,7 +111,12 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 
 ### 4.2 Install LiveCD on flash drive
 
-a. Identify the device name of the flash drive with the command 
+a. Check that the script `createBootableUSB.sh` is in the home directory. If not, download the script with
+
+     ```
+     $ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
+     ```
+b. Identify the device name of the flash drive with the command 
 
 ```
 $ sudo lsblk -p
@@ -119,38 +124,47 @@ $ sudo lsblk -p
 
 Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /dev/sdc or /dev/sdc1). 
 
-b. From the home directory of `labuser`, run the script with the command 
+c. From the home directory of `labuser`, run the script with the command 
 
 ```
 $ sudo bash createBootableUSB.sh
 ```
 
-The script will prompt for hardware specific information. In particular, the script requests to enter the device name of the flash drive (`/dev/sdb`).
+The script prompts for hardware specific information. In particular, the script requests to enter the device name of the flash drive (`/dev/sdb`).
 Once the script is completed, remove the flash drive.  The flash drive contains  the ISO image (`root.iso`) and grub configuration files.
 
-## 5. Copying the LiveCD to the hard drive 
-The LiveCD can be run on a target machine from the flash drive. This assumes that the BIOS is set so that the system first tries to boot from a flash drive. 
-
+## 5. Installing the LiveCD on the hard drive 
+Thee following instructions install the LiveCD on the hard drive of the target machine. 
 
 >**Note: Copying the LiveCD to the hard drive will delete all partitions on the hard disk. All data on the hard disk will be lost.**
 
-a. Insert the flash drive from Step 4 into the target system. Rebooting the target system starts  the LiveCD. Log in as `labuser`.
+a. Check if the BIOS of the target machine is set so that the system first tries to boot from a flash drive. 
 
-b. Identify the device names of the flash drive and the hard disk on the target system.  
+b. Insert the flash drive from Step 4 into the target system. Rebooting the target system starts the LiveCD from the flash drive. Log in as `labuser`.
+
+c. You need to copy the shell script `createBootableUSB.sh` to the home directory of `labuser`. One option is to copy the file on a flash drive (different flash drive than created in Step 4). An alternative is to connect the target machine to the Internet and download the file. 
+
+- To get Internet access, connect one of the Ethernet interfaces to an  network with access to a DHCP server und run the command
+
+```
+$ sudo dhclient
+```
+
+
+d. Identify the device names of the hard disk on the target system.  
 
 ```
 $ sudo lsblk -p
 ```
 
-In many cases the hard disk is `/dev/sda` and the inserted flash drive is `/dev/sdb`. Verify that this is the case. Otherwise, take not of the device names.  
+In many cases the hard disk is `/dev/sda`. Verify that this is the case. 
 
-c. Make sure that the storage capacity of the hard disk is as least that of the flash drive.  Then, assuming that `/dev/sdb is the flash drive and `/dev/sda` is the hard disk, copy the flash drive to the hard disk with the command 
+e. From the home directory of `labuser`, run the script with the command 
 
 ```
-$ sudo dd if=/dev/sdb of=/dev/sda
+$ sudo bash createBootableUSB.sh
 ```
 
-The command  take considerable time to complete. 
-
-d. Remove the flash drive and reboot the target machine. 
+When the script requests to enter the device name of the target drive, enter `/dev/sda`. If entered for the path of the ISO file, enter `/isodevice/`.  
+f. Once the script has completed, reboot the target machine and remove the flash drive. 
 
