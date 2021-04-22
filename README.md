@@ -60,9 +60,10 @@ Proceed as follows:
 ### 3.2  Run script that creates ISO image 
   - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
 
-     ```$ sudo ifconfig enp0s3 up```
-     
-     ```$ sudo dhclient enp0s3```
+     ```
+     $ sudo ifconfig enp0s3 up
+     $ sudo dhclient enp0s3
+     ```
      
   - Change the hostname. To configure a LiveCD for `PC1`, type
 
@@ -74,9 +75,10 @@ Proceed as follows:
 
   - Just before running the script clear the history of bash commands (to prevent that they are copied to the LiveCD) with
    
-   ```$ history -c```
-   
-  ```$ >.bash_history```
+   ```
+   $ history -c
+   $ >.bash_history
+   ```
    
   - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
