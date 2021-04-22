@@ -47,6 +47,7 @@ d. Touch up the VM
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change the power saving mode to prevent that the system locks  the screen after an idle period.
+  - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
 
 ## 3. Create an ISO LiveCD image
 The following instructions create a LiveCD ISO image, which has the same configuration as the customized Ubuntu server. 
@@ -60,6 +61,8 @@ Proceed as follows:
  - Start the *Build VM* and log in as `labuser'.
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. 
  - Once the flash drive is created, delete the *Build VM*.     
+
+**Hint:** Create four BuildVM, one for each PC (PC1, PC2, PC3, PC4), and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
 
 ### 3.2  Run script that creates ISO image 
   - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
