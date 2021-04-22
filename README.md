@@ -67,18 +67,18 @@ Proceed as follows:
      
   - Change the hostname. To configure a LiveCD for `PC1`, type
 
-```sudo hostnamectl set-hostname PC3```
+     ```sudo hostnamectl set-hostname PC3```
 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
-```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
+     ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
 
   - Just before running the script clear the history of bash commands (to prevent that they are copied to the LiveCD) with
    
-   ```
-   $ history -c
-   $ >.bash_history
-   ```
+     ```     
+     $ history -c     
+     $ >.bash_history     
+     ```
    
   - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
