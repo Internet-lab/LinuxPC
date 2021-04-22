@@ -42,10 +42,10 @@ d. Touch up the VM
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
-  - Change power saving mode to prevent computer from locking screen after idle period.
+  - Change the power saving mode to prevent that the system locks  the screen after an idle period.
 
 ## 3. Create an ISO LiveCD image
-The next step creates a LiveCD ISO image, which has the same configurationas the customized Ubuntu server. 
+The following instructions create a LiveCD ISO image, which has the same configuration as the customized Ubuntu server. 
 
 ### 3.1  **(Optional, but highly recommended)** Avoid increasing the size of VM when creating a new LiveCD.
 
@@ -72,10 +72,11 @@ Proceed as follows:
 
 ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
 
-  - Just before running the script clear the history of bash commands (to prevent that they arecopied to the liveCD) with
+  - Just before running the script clear the history of bash commands (to prevent that they are copied to the LiveCD) with
    
    ```$ history -c```
    
+  ```$ >.bash_history```
    
   - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
 From the home directory of `labuser`, run the script with the command 
