@@ -62,7 +62,7 @@ Proceed as follows:
  - Next run the scripts to create an ISO LiveCD image and burn the ISO file to a flash drive. 
  - Once the flash drive is created, delete the *Build VM*.     
 
-**Hint:** Create four BuildVM, one for each PC (PC1, PC2, PC3, PC4), and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
+>**Hint:** Create four BuildVM, one for each PC (PC1, PC2, PC3, PC4), and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
 
 ### 3.2  Run script that creates ISO image 
   - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
@@ -99,7 +99,7 @@ Proceed as follows:
 
 The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
 
-**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
+>**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
 
 
