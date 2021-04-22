@@ -107,9 +107,9 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 
 a. Check that the script `createBootableUSB.sh` is in the home directory. If not, download the script with
 
-     ```
-     $ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
-     ```
+```
+$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
+```
 b. Identify the device name of the flash drive with the command 
 
 ```
@@ -162,5 +162,5 @@ $ sudo bash createBootableUSB.sh
 When the script requests to enter the device name of the target drive, enter `/dev/sda`. If entered for the path of the ISO file, enter `/isodevice/`.  
 f. Once the script has completed, reboot the target machine and remove the flash drive. 
 
->**Note:** Once the LiveCD is installed on the hard drive, future updates to the LiveCD image only require to replace the file `/isodevice/root.iso` on the hard drive. 
+>**Note:** Once the LiveCD is installed on the hard drive, future updates to the LiveCD image only require to replace the file `/isodevice/root.iso` on the hard drive. Complete Step 3 to create a new ISO file, e.g., in `/tmp/tmpfs/liveCD.iso`, and put this file as `/isodevice/root.iso` on the target machine. 
 
