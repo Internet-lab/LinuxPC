@@ -27,11 +27,15 @@ a. Start the Ubuntu server in Virtualbox and log in as `labuser`.
 
 b. From the home directory of `labuser` download the script *InstallBaremetalPC.sh* using the command 
 
-```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh```
+```
+$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh
+```
 
 c. Execute the script with the command 
 
-```$ sudo bash InstallBaremetalPC.sh```
+```
+$ sudo bash InstallBaremetalPC.sh
+```
 
  - The script installs  software packages and sets configuration files needed in the Internet Lab (as well as some additional software). 
  - Answer `Y` when  prompted and select `<Yes>` in the screen `Configuring wireshark-common`. 
@@ -67,23 +71,28 @@ Proceed as follows:
      
   - Change the hostname. To configure a LiveCD for `PC1`, type
 
-     ```sudo hostnamectl set-hostname PC3```
+     ```
+     sudo hostnamectl set-hostname PC3
+     ```
 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
-     ```$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh```
+     ```
+     $ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh
+     ```
 
   - Just before running the script clear the history of bash commands (to prevent that they are copied to the LiveCD) with
    
      ```     
      $ history -c     
-     $ >.bash_history     
+     $ >.bash_history
+     $ >.wget-hsts 
      ```
    
-  - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. 
-From the home directory of `labuser`, run the script with the command 
-
-```$ sudo bash makeLiveCD.sh```
+  - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. From the home directory of `labuser`, run the script with the command 
+  ```
+  $ sudo bash makeLiveCD.sh
+  ```
 
 The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
 
@@ -101,13 +110,17 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 
 a. Identify the device name of the flash drive with the command 
 
-```$ sudo lsblk -p```
+```
+$ sudo lsblk -p
+```
 
 Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /dev/sdc or /dev/sdc1). 
 
 b. From the home directory of `labuser`, run the script with the command 
 
-```$ sudo bash createBootableUSB.sh```
+```
+$ sudo bash createBootableUSB.sh
+```
 
 The script will prompt for hardware specific information. In particular, the script requests to enter the device name of the flash drive (`/dev/sdb`).
 Once the script is completed, remove the flash drive.  The flash drive contains  the ISO image (`root.iso`) and grub configuration files.
@@ -122,13 +135,17 @@ a. Insert the flash drive from Step 4 into the target system. Rebooting the targ
 
 b. Identify the device names of the flash drive and the hard disk on the target system.  
 
-```$ sudo lsblk -p```
+```
+$ sudo lsblk -p
+```
 
 In many cases the hard disk is `/dev/sda` and the inserted flash drive is `/dev/sdb`. Verify that this is the case. Otherwise, take not of the device names.  
 
 c. Make sure that the storage capacity of the hard disk is as least that of the flash drive.  Then, assuming that `/dev/sdb is the flash drive and `/dev/sda` is the hard disk, copy the flash drive to the hard disk with the command 
 
-```$ sudo dd if=/dev/sdb of=/dev/sda```
+```
+$ sudo dd if=/dev/sdb of=/dev/sda
+```
 
 The command  take considerable time to complete. 
 
