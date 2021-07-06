@@ -91,7 +91,7 @@ Proceed as follows:
   $ sudo bash makeLiveCD.sh
   ```
 
-The script asks a few times for information. If you do not know otherwise, select the default option.  When queried for the hostname enter one of `P1`,`P2`,`P3`, or `P4`.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
+The script asks a few times for information. If you do not know otherwise, select the default option.  When queried for the hostname enter one of `PC1`,`PC2`,`PC3`, or `PC4`.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
 
 >**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
