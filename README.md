@@ -44,7 +44,7 @@ $ sudo bash InstallBaremetalPC.sh
 
 d. Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
-  - Change the screen background. There are templates available for PC1, PC2, ...
+  - Change the wallpaper of the desktop. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Ports`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
   - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
