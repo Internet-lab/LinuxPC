@@ -44,7 +44,7 @@ $ sudo bash InstallBaremetalPC.sh
 
 d. Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
-  - Change the screen background. There are templates available for PC1, PC2, ...
+  - Change the wallpaper of the desktop. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Ports`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
   - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
@@ -101,12 +101,6 @@ Proceed as follows:
      $ sudo ifconfig enp0s3 up
      $ sudo dhclient enp0s3
      ```
-     
-  - Change the hostname. To configure a LiveCD for `PC1`, type
-
-     ```
-     sudo hostnamectl set-hostname PC3
-     ```
 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
 
@@ -127,7 +121,7 @@ Proceed as follows:
   $ sudo bash makeLiveCD.sh
   ```
 
-The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
+The script asks a few times for information. If you do not know otherwise, select the default option.  When queried for the hostname enter one of `PC1`,`PC2`,`PC3`, or `PC4`.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso`. 
 
 >**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
@@ -143,9 +137,9 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 
 a. Check that the script `createBootableUSB.sh` is in the home directory. If not, download the script with
 
-     ```
-     $ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
-     ```
+```
+$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
+```
 b. Identify the device name of the flash drive with the command 
 
 ```
@@ -197,4 +191,6 @@ $ sudo bash createBootableUSB.sh
 
 When the script requests to enter the device name of the target drive, enter `/dev/sda`. If entered for the path of the ISO file, enter `/isodevice/`.  
 f. Once the script has completed, reboot the target machine and remove the flash drive. 
+
+>**Note:** Once the LiveCD is installed on the hard drive, future updates to the LiveCD image only require to replace the file `/isodevice/root.iso` on the hard drive. Complete Step 3 to create a new ISO file, e.g., in `/tmp/tmpfs/liveCD.iso`, and put this file as `/isodevice/root.iso` on the target machine. 
 
