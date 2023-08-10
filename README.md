@@ -48,7 +48,37 @@ d. Touch up the VM
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Ports`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
   - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
-
+  - We want to make sure that the following services are not started at boot time: 
+  
+            avahi-daemon   named  bgpd   ospfd   ospf6d  pimd   ripd   ripngd   isisd   zebra 
+       
+    To do this we should disable them with the commands 
+    ```
+    $ sudo systemctl disable avahi-daemon
+    $ sudo systemctl disable named
+    $ sudo systemctl disable bgpd
+    $ sudo systemctl disable ospfd
+    $ sudo systemctl disable ospf6d
+    $ sudo systemctl disable pimd
+    $ sudo systemctl disable ripd
+    $ sudo systemctl disable rpingd
+    $ sudo systemctl disable isisd    
+    $ sudo systemctl disable zebra
+    ```
+    In addition, we need to edit the service files for all of the above services and comment out a line. In each of the following files, go to the *Install* section of the file and put a `#` in front of `Wanted by`: 
+    ```
+    /lib/systemd/system/avahi-daemon.service    
+    /lib/systemd/system/named.service
+    /lib/systemd/system/bgpd.service
+    /lib/systemd/system/ospfd.service
+    /lib/systemd/system/ospf6d.service
+    /lib/systemd/system/pimd.service
+    /lib/systemd/system/ripd.service
+    /lib/systemd/system/ripngd.service
+    /lib/systemd/system/isisd.service
+    /lib/systemd/system/zebra.service  
+    ```
+    
 ## 3. Create an ISO LiveCD image
 The following instructions create a LiveCD ISO image, which has the same configuration as the customized Ubuntu server. 
 
