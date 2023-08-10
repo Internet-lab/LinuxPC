@@ -65,7 +65,7 @@ d. Touch up the VM
     $ sudo systemctl disable isisd    
     $ sudo systemctl disable zebra
     ```
-    In addition, we need to edit the service files for all of the above services and comment out a line. In each of the following files, go to the *Install* section of the file and put a `#` in front of `Wanted by`: 
+    In addition, we need to edit the service files for all of the above services and comment out a line. In each of the following files, go to the *Install* section of the files and put a `#` in front of `Wanted by`: 
     ```
     /lib/systemd/system/avahi-daemon.service    
     /lib/systemd/system/named.service
