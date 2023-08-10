@@ -105,7 +105,7 @@ Proceed as follows:
   - Change the hostname. To configure a LiveCD for `PC1`, type
 
      ```
-     sudo hostnamectl set-hostname PC3
+     sudo hostnamectl set-hostname PC1
      ```
 
   - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
