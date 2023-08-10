@@ -131,7 +131,7 @@ sudo apt-get update --fix-missing
   $ sudo bash makeLiveCD.sh
   ```
 
-The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/tmpfs/liveCD.iso` (or `/tmp/liveCD/liveCD.iso`). 
+The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/liveCD/liveCD.iso`. 
 
 >**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
