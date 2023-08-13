@@ -100,9 +100,9 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
 
 ### 3.3  Run script that creates ISO image 
   - Check for needed updates of packages
-```
-sudo apt-get update --fix-missing
-```
+     ```
+     $ sudo apt-get update --fix-missing
+     ```
   - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
 
      ```
