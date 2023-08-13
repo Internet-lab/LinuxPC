@@ -93,12 +93,16 @@ Proceed as follows:
  - Once the flash drive is created, delete the *Build VM*.     
 
 >**Hint:** Create four BuildVMs, one for each PC (PC1, PC2, PC3, PC4) and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
-### 3.2  Update packages
+
+## 3.2 Touch up 
+Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
+
+### 3.3  Update packages
 Check for needed updates of packages
 ```
 sudo apt-get update --fix-missing
 ```
-### 3.3  Run script that creates ISO image 
+### 3.4  Run script that creates ISO image 
   - Check whether the *Build VM* has Internet access. If not, find the network interface name by typing `ip link` and identify the virtual network interface. Then enable the network interface (say with name *enp0s3*) and start a DHCP client with 
 
      ```
