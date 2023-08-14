@@ -3,7 +3,7 @@
 The available scripts install a Live CD version of the Linux PC for the Internet Lab on a "baremetal" PC system.  
 The process described here assumes that the installation is done in Virtualbox on a Mac or Windows or Linux system (The scripts also run on a native Linux installation).
 
-Version:  April 2021
+Version:  August 2023
 ## 1. Install Ubuntu server 
 For installing Ubuntu server in Virtualbox, there are excellent instructions available at https://hibbard.eu/install-ubuntu-virtual-box/ . Follow the instructions until you get to *"Up and Running with SSH"*. 
 
@@ -147,6 +147,13 @@ The script asks a few times for information. If you do not know otherwise, selec
 ### 4.1 Insert flash drive
 Insert a flash drive (min. 16 GB) into a USB port of the computer where Virtualbox is running. The flash drive must be mounted in the *Build VM*. 
 Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not appear as a drive. In this case, select the Ubuntu VM in the VM Manager and go to Settings→ Ports → USB, and add the flash drive. Then removing and re-inserting the flash drive should show it in the Ubuntu VM. 
+
+>**Note:** Using USB flash drives on a Virtualbox VM requires the installation of the ``Virtualbox Extension Pack``. Follow the online instructions fo installing the pack.
+
+>**Note:** For Linux hosts: If the *Build VM* cannot find the flash drive, then the user `labuser` may need to be added to the `vboxusers` group. Go to the Linux host and issue
+>```
+>$ sudo adduser labuser vboxusers
+>```
 
 ### 4.2 Install LiveCD on flash drive
 
