@@ -154,6 +154,7 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 >```
 >$ sudo adduser labuser vboxusers
 >```
+>After this, restart Virtualbox. It may be a good idea to also reboot the Linux host system.
 
 ### 4.2 Install LiveCD on flash drive
 
