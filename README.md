@@ -94,7 +94,7 @@ Proceed as follows:
 
 >**Hint:** Create four BuildVMs, one for each PC (PC1, PC2, PC3, PC4) and create four USB flash drives that each hold a LiveCD for one of the PCs. Label the flash drives and use them to configure the PCs in the Internet lab. 
 
-### 3.2 Touch up 
+### 3.2 Check desktop background
 Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
 
 
