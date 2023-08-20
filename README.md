@@ -53,14 +53,15 @@ d. Touch up the VM
      $ sudo apt-get update --fix-missing
      ```
   - The snap daemon delays the shutdown process up to 90 seconds. The following instructions set the delay to 10 seconds. To do this open the file `/etc/systemd/system.conf` with sudo privileges, e.g.,
+    Find the line with `#DefaultTimeoutStopSec=90s`:
      ```
      $ sudo vi /etc/systemd/system.conf
      ```
-   Find the line with `#DefaultTimeoutStopSec=90s`:
-  
-  (1) Remove `#`.
-  
-  (2) Change `90s` to `10s`. 
+    Find the line with `#DefaultTimeoutStopSec=90s`:
+
+    (1) Remove `#`.
+
+    (2) Change `90s` to `10s`. 
    
   - We want to make sure that the following services are not started at boot time: 
   
