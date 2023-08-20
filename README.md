@@ -57,7 +57,7 @@ d. Touch up the VM
      $ sudo vi /etc/systemd/system.conf
      ```
   Find the line with `#DefaultTimeoutStopSec=90s`:
-      - Remove `#'.
+      - Remove `#`.
       - Change `90s` to `10s`. 
    
   - We want to make sure that the following services are not started at boot time: 
