@@ -147,7 +147,7 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
   $ sudo bash makeLiveCD.sh
   ```
 
-The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/liveCD/liveCD.iso`. 
+The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/liveCD/liveCD.iso`. When prompted for the hostname, enter one of `PC1, PC2, PC3, PC4`.
 
 >**Note:** Since the default location of *liveCD.iso* is in a subdirectory of `/tmp`, the ISO image is lost after rebooting. 
 
