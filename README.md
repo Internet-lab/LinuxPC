@@ -48,6 +48,18 @@ d. Touch up the VM
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
   - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Ports`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
   - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
+  - Check for needed updates of packages
+     ```
+     $ sudo apt-get update --fix-missing
+     ```
+  - The snap daemon delays the shutdown process up to 90 seconds. The following instructions set the delay to 10 seconds. To do this open the file `/etc/systemd/system.conf` with sudo privileges, e.g.,
+     ```
+     $ sudo vi /etc/systemd/system.conf
+     ```
+  Find the line with `#DefaultTimeoutStopSec=90s`: 
+  a. Remove `#'
+  b. Chamge `90s` to `10s` 
+   
   - We want to make sure that the following services are not started at boot time: 
   
             avahi-daemon   named  bgpd   ospfd   ospf6d  pimd   ripd   ripngd   isisd   zebra 
@@ -107,10 +119,6 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
      $ sudo dhclient enp0s3
      ```
      
-   - Check for needed updates of packages
-     ```
-     $ sudo apt-get update --fix-missing
-     ```
   - Change the hostname. To configure a LiveCD for `PC1`, type
 
      ```
