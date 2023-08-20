@@ -58,9 +58,9 @@ d. Touch up the VM
      ```
   Find the line with `#DefaultTimeoutStopSec=90s`: 
   
-  a. Remove `#'
+     (1) Remove `#'
   
-  b. Change `90s` to `10s` 
+     (2) Change `90s` to `10s` 
    
   - We want to make sure that the following services are not started at boot time: 
   
