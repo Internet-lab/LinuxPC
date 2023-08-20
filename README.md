@@ -56,7 +56,7 @@ d. Touch up the VM
      ```
      $ sudo vi /etc/systemd/system.conf
      ```
-  Find the line with `#DefaultTimeoutStopSec=90s`:
+   Find the line with `#DefaultTimeoutStopSec=90s`:
   
   (1) Remove `#`.
   
