@@ -3,26 +3,10 @@
 ############################################################
 # Setup error handling
 
-# exit whan a command fails
-set -e
+set -e # exit whan a command fails
 
 # echo an error message for debugging before exiting
 trap '[ $? == 0 ] || >&2 echo "ERROR: \"${BASH_COMMAND}\" command filed with exit code $?."' EXIT
-
-############################################################
-echo Checking prerequisites
-
-required_packages="squashfs-tools xorriso casper lupin-casper"
-missing_packages=
-for package in ${required_packages}; do
-	if ! dpkg -s ${package} 1>/dev/null 2>&1; then
-		missing_packages+="${package} "
-	fi
-done
-if [ ! -z "${missing_packages}" ]; then
-	echo "Installing missing package ${missing_packages}"
-	sudo apt -y install ${missing_packages}
-fi
 
 ############################################################
 read -ep "Enter working directory (/tmp/liveCD/): " working_dir
@@ -41,6 +25,16 @@ fi
 
 ############################################################
 read -p "Enter hostname for LiveCD: " hostname
+
+############################################################
+echo Checking prerequisites
+
+ARCH=$(uname -m)
+sudo apt -y -qq install squashfs-tools xorriso casper lupin-casper 1>/dev/null 2>/dev/null
+# sudo apt -y -qq install grub-pc-bin grub-efi-${ARCH}-bin 1>/dev/null 2>/dev/null
+sudo apt -y -qq autoremove
+sudo apt clean
+sudo apt-get clean
 
 ############################################################
 
@@ -66,16 +60,16 @@ if [[ ! -z ${reserved_user} ]]; then
 		done
 	fi
 
-    # Re-enable exit-on-error
-    set -e
+    set -e # Re-enable exit-on-error
 fi
 
 ############################################################
 # Setting up variables
 
-src_dir=${working_dir}/rootfs               # Source directory for LiveCD files. Files are sync with `/` prior to squashing
+src_dir=${working_dir}/root                 # Source directory for LiveCD files. Files are sync with `/` prior to squashing
 livecd_dir=${working_dir}/liveCD            # Directory storing LiveCD boot loaders.
 excluded_list_file=${working_dir}/excluded  # Files containing a list of excluded files for rsync operation
+included_list_file=${working_dir}/included  # Files containing a list of excluded files for rsync operation
 
 FORMAT=squashfs                             # File extension for the squashed LiveCD
 casper_fs=casper                            # Boot loader
@@ -84,23 +78,37 @@ casper_fs=casper                            # Boot loader
 mkdir -p "${src_dir}" ${livecd_dir}/{${casper_fs},boot/grub}
 
 ############################################################
-echo Cleaning up some space
-
-sudo apt clean
-
-############################################################
 echo Creating Excluded List
 
 # Set excluded list to ignore non-file paths, like mounting points, device directories, etc.
 # Also excludes this script and files that will change when the script is running, e.g., bash history.
+cat > ${included_list_file} <<EOF
+/boot/grub/
+# To sync boot options, uncomment the following line
+# /boot/grub/grub.cfg
+/home/*
+/home/*/.*
+/home/*/.*/**
+/home/*/Desktop
+/home/*/Downloads
+/home/*/Pictures
+/home/*/Templates
+/home/*/Videos
+/home/*/Documents
+/home/*/Music
+/home/*/Public
+EOF
 cat > ${excluded_list_file} <<EOF
-/boot/*
-/dev/*
+/boot/**
+/dev/**
 /etc/fstab
 /etc/mtab
+# DNS server setting
+/etc/resolv.conf
 /etc/timezone
 /etc/gdm/custom.conf
 /etc/X11/xorg.conf*
+/home/*/**
 /lost+found*
 /media/*
 /mnt/*
@@ -119,6 +127,7 @@ $(realpath $0)
 $(realpath ${HOME}/.bash_history)
 $(realpath ${working_dir})
 $(realpath ${iso_path})
+$(realpath ${src_dir})
 EOF
 # Maybe login screen?
 # /etc/lightdm/lightdm.conf
@@ -127,30 +136,8 @@ EOF
 ############################################################
 echo Creating source directory
 
-# Add source directory to excluded list
-echo "${src_dir}" >> ${excluded_list_file}
 # Copy everything to source directory
-sudo rsync -a --info=progress2 --exclude-from="${excluded_list_file}" --one-file-system "/" "${src_dir}" --delete --delete-excluded
-# To include boot options, uncomment the following line
-# sudo rsync -a --info-progress2 /boot/grub/grub.cfg "${src_dir}/boot/grub/grub.cfg"
-
-############################################################
-echo Deleting extraneous files from user directories
-
-# TODO: Find a way to synchronize only folder structures (with permission & owner), so that we don't need to resort to deleting them after the fact.
-
-for user_dir in ${src_dir}/home/*; do
-    for dir in ${user_dir}/*; do
-        case ${dir} in
-        *Desktop|*Downloads|*Pictures|*Templates|*Videos|*Documents|*Music|*Public )
-            sudo rm -rf ${dir}/*
-            continue;;
-        * )
-            sudo rm -rf ${dir}
-            continue;;
-        esac
-    done
-done
+sudo rsync -ax --delete --delete-excluded --info=progress2 --include-from="${included_list_file}" --exclude-from="${excluded_list_file}" "/" "${src_dir}"
 
 ############################################################
 echo Configuring Casper
@@ -158,10 +145,6 @@ echo Configuring Casper
 casp_conf=${src_dir}/etc/casper.conf
 sudo sed 's/^export HOST=.*/export HOST="'"$hostname"'"/g' -i "${casp_conf}"
 sudo sed 's/^# export FLAVOUR.*/export FLAVOUR="ubuntu"/g' -i "${casp_conf}"
-
-############################################################
-echo Resetting DNS server setting
-sudo rm -f ${src_dir}/etc/resolv.conf
 
 ############################################################
 echo Setting hostname
@@ -195,16 +178,11 @@ sleep 1
 
 # (chroot)
 cat <<EOF | sudo chroot ${src_dir} /bin/bash
-# update initrd
-update-initramfs -u -k ${KERNEL_VER}
+update-initramfs -u -k ${KERNEL_VER} # update initrd
 EOF
 
 # Unmount virtual file systems
-sudo umount ${src_dir}/proc
-sudo umount ${src_dir}/sys
-sudo umount ${src_dir}/dev
-sudo umount ${src_dir}/run
-sudo umount ${src_dir}/boot
+sudo umount ${src_dir}/{proc,sys,dev,run,boot}
 
 ############################################################
 echo Renaming kernel and initial ramdisk files
@@ -231,20 +209,20 @@ set default="0"
 set timeout=10
 
 menuentry "LiveCD Default" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet
+linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet noprompt fsck.mode=skip
 initrd /casper/initrd
 }
 
 menuentry "LiveCD safe mode" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 xforcevesa quiet
+linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet noprompt xforcevesa
 initrd /casper/initrd
 }
 menuentry "LiveCD CLI" {
-linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 textonly quiet
+linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet noprompt fsck.mode=skip textonly
 initrd /casper/initrd
 }
 menuentry "LiveCD load in RAM" {
-linux /casper/vmlinuz boot=casper toram quiet
+linux /casper/vmlinuz boot=casper toram quiet noprompt fsck.mode=skip
 initrd /casper/initrd
 }
 EOF

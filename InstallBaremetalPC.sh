@@ -9,22 +9,25 @@
 # 
 # April 2021
 
+############################################################
+# Setup error handling
+
+set -e # exit whan a command fails
+
+# echo an error message for debugging before exiting
+trap '[ $? == 0 ] || >&2 echo "ERROR: \"${BASH_COMMAND}\" command filed with exit code $?."' EXIT
+
 #---------------------(V03)---------------------
-sudo apt-get update
-sudo apt-get upgrade
+sudo apt -y -qq update
+sudo apt -y -qq upgrade
 
 # install gnome and lxterminal 
-sudo apt update
-sudo apt -y install gnome-session lxterminal
-sudo apt -y install gnome-screenshot
-
-sudo apt update
-sudo apt -y install mousepad -y
-sudo apt autoremove --purge byobu -y
+sudo apt -y -qq install wireshark gnome-session lxterminal gnome-screenshot mousepad
+sudo apt -y -qq autoremove --purge byobu
 #--------------------- (V04) ---------------------
 # interface configuraiton added 
 #------------------------------------------
-cat <<EOF > /etc/netplan/00-installer-config.yaml 
+cat <<EOF | sudo tee >/dev/null /etc/netplan/00-installer-config.yaml 
 # This is the network config written by 'subiquity'
 network:
   version: 2
@@ -38,9 +41,7 @@ network:
       dhcp4: no
       optional: true
 EOF
-sudo chmod 755 /etc/rc.local
-sudo apt -y install members
-sudo apt -y install net-tools
+sudo apt -y -qq install members net-tools
 #---------------------(V05) ---------------------
 # Skip install of Virtualbox Guest Addition
 # Instructions are as follows
@@ -53,7 +54,7 @@ sudo apt -y install net-tools
 #       sudo mount /dev/cdrom /media/cdrom.
 # 6-    Change into the mounted directory with the command cd /media/cdrom.
 # 7-    Install the necessary dependencies with the command 
-#       sudo apt-get install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)
+#       sudo apt -y -qq install -y dkms build-essential linux-headers-generic linux-headers-$(uname -r)
 # 8-    Change to the root user with the command sudo su.
 # 9-    Install the Guest Additions package with the command ./VBoxLinuxAdditions.run.
 # 10-   Allow the installation to complete.
@@ -68,13 +69,12 @@ sudo apt -y install net-tools
 # on VirtualBox
 #------------------------------------------
 
-create "Shared Folder"
 #--------------------- (V06) ---------------------
 # Don't have: yaml files updated eth0 IP address assigned by rc_local file.txt
 #--------------------- (V07) ---------------------
 # Skip Chrome install. Here are instructions: 
 # wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-# sudo apt install ./google-chrome-stable_current_amd64.deb
+# sudo apt -y -qq install ./google-chrome-stable_current_amd64.deb
 # 
 # sudo reboot
 # 
@@ -83,47 +83,39 @@ create "Shared Folder"
 # next lines are commented since they are repeated further below
 #--------------------- (V08) ---------------------
 #   Should non-superusers be able to capture packets?  YES
-#sudo apt-get -y install wireshark
+#sudo apt -y -qq install wireshark
 #sudo usermod -aG wireshark labuser
 #--------------------- (V10) ---------------------
-sudo apt update
-sudo apt -y install firefox
+sudo apt -y -qq install firefox
 # 
 #===================== TCP LAB SOFTWARE =========================
 # ---------------------------------------
 # Install net-tools on Ubuntu 20.04
 # ---------------------------------------
 # Jorg: seems to be already installed with 20.04 server
-sudo apt update
-sudo apt-get -y install net-tools
+sudo apt -y -qq install net-tools
 
 # ---------------------------------------
 # install telnet server
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y install telnetd  
+sudo apt -y -qq install telnetd  
 
 # ---------------------------------------
 # Install traceroute/traceroute6
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y install inetutils-traceroute 
+sudo apt -y -qq install inetutils-traceroute 
 
 # ---------------------------------------
 # Install iperf & iperf3
 # ---------------------------------------
-sudo apt-get update
-sudo apt-get -y install iperf    
-sudo apt-get -y install iperf3  
+sudo apt -y -qq install iperf iperf3
 
 # ---------------------------------------
 # Install TFTP-HPA client & server
 # Usage:
 # sudo /etc/init.d/tftp-hpa {start|stop|restart|force-reload|status}
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y install tftpd-hpa      #tftp server
-sudo apt-get -y install tftp-hpa       #tftp client
+sudo apt -y -qq install tftpd-hpa tftp-hpa
 
 # to start TFTP server
 # sudo /etc/init.d/tftp-hpa {start|stop|restart|force-reload|status}
@@ -137,7 +129,7 @@ sudo mkdir /home/labuser/tftpboot
 sudo chown -R tftp /home/labuser/tftpboot
 
 sudo cp /etc/default/tftpd-hpa /etc/default/tftpd-hpa.original
-cat <<EOF > /etc/default/tftpd-hpa
+cat <<EOF | sudo tee >/dev/null /etc/default/tftpd-hpa
 TFTP_USERNAME="tftp"
 TFTP_DIRECTORY="/home/labuser/tftpboot"
 TFTP_ADDRESS=":69"
@@ -147,33 +139,28 @@ EOF
 # Install FTP Server
 # Jorg: Doesn't this install a second telnet server? 
 # ---------------------------------------
-sudo apt update
-sudo apt -y install vsftpd            
-sudo apt-get -y  install xinetd       
+sudo apt -y -qq install vsftpd xinetd       
 
 # ---------------------------------------
 # Install arping
 # http://linux-ip.net/html/tools-arping.html
 # https://www.poftut.com/arping-command-tutorial-examples-linux/
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y  install arping  
+sudo apt -y -qq install arping  
 
 # ---------------------------------------
 # Install Bridge Utilities
 # brctl
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y install bridge-utils
+sudo apt -y -qq install bridge-utils
 
 # ---------------------------------------
 # Install quagga
 # ---------------------------------------
-sudo apt update
 sudo apt-cache policy quagga
-sudo apt-get -y  install quagga
+sudo apt -y -qq install quagga
 
-cat <<EOF > /etc/quagga/daemons
+cat <<EOF | sudo tee >/dev/null /etc/quagga/daemons
 zebra=yes
 bgpd=no 
 ospfd=yes
@@ -202,37 +189,32 @@ sudo chmod 640 /etc/quagga/*.conf
 # Stop prevent the server from starting at reboot by
 # sudo update-rc.d isc-dhcp-server disable
 # ---------------------------------------
-sudo apt-get update
-sudo apt-get -y  install isc-dhcp-server   
+sudo apt -y -qq install isc-dhcp-server   
 # Client is already included, no need to install
-#sudo apt-get -y  install isc-dhcp-client
+#sudo apt -y -qq install isc-dhcp-client
 
 # ---------------------------------------
 # Install BIND9: DNS Server
 # ---------------------------------------
-sudo apt-get update
-sudo apt-get -y  install bind9 bind9utils 
+sudo apt -y -qq install bind9 bind9utils 
 
 
 # ---------------------------------------
 # Install ethtool 
 # ---------------------------------------
-sudo apt-get update
-sudo apt-get -y  install ethtool   # was already installed 
+sudo apt -y -qq install ethtool # was already installed
 
 # ---------------------------------------
 # Install nmap
 # This utility is not used in  Networking Lab
 # but it is a  useful tool to have handy
 # ---------------------------------------
-sudo apt-get update
-sudo apt-get -y install nmap 
+sudo apt -y -qq install nmap 
 
 # ---------------------------------------
 # Install Wireshark [Not for GNS3]
 # ---------------------------------------
-sudo apt update
-sudo apt -y install  wireshark
+sudo apt -y -qq install wireshark
 
 # ---------------------------------------
 # Post Wireshark Configurations
@@ -251,18 +233,15 @@ sudo usermod -aG wireshark labuser
 # ---------------------------------------
 # Install minicom 
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y install minicom 
+sudo apt -y -qq install minicom 
 # ---------------------------------------
 # Install CKermit 
 # ---------------------------------------
-sudo apt update
-sudo apt -y install ckermit
+#sudo apt -y -qq install ckermit
 # ---------------------------------------
 # Install ssh 
 # ---------------------------------------
-sudo apt update
-sudo apt-get -y install openssh-server
+sudo apt -y -qq install openssh-server
 
 # ---------------------------------------
 # Deactivate firewall
@@ -272,13 +251,12 @@ sudo service ufw stop
 # ---------------------------------------
 # Utilities 
 # ---------------------------------------
-apt-get -y install dnsutils
-apt-get -y install unzip zip
+sudo apt -y -qq install dnsutils unzip zip
 
 # ---------------------------------------
 # openvswitch
 # ---------------------------------------
-apt-get install -y openvswitch-switch
+sudo apt -y -qq install -y openvswitch-switch
 
 # ---------------------------------------
 # scapy 
@@ -287,33 +265,26 @@ apt-get install -y openvswitch-switch
 #   malformed packets. 
 #   You may want to skip the installation 
 # ---------------------------------------
-sudo apt update
-apt-get -y install scapy
+sudo apt -y -qq install scapy
 
 # ---------------------------------------
 # File manager 
 # ---------------------------------------
-sudo apt update
-apt-get -y install nemo
+sudo apt -y -qq install nemo
 
 # ---------------------------------------
 # Disable password for labuser 
 # ---------------------------------------
-cat <<EOF >> /etc/sudoers
+cat <<EOF | sudo tee --append >/dev/null /etc/sudoers
 labuser ALL=(ALL) NOPASSWD:ALL
 EOF
 
 # ---------------------------------------
 # Download wallpaper for PCs
 # ---------------------------------------
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/PC-wallpaper/PC1.png
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/PC-wallpaper/PC2.png
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/PC-wallpaper/PC3.png
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/PC-wallpaper/PC4.png
+sudo wget -P /usr/share/backgrounds https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/PC-wallpaper/PC{1,2,3,4}.png
 
-sudo mv PC1.png  PC2.png PC3.png PC4.png  /usr/share/backgrounds 
- 
-cat <<EOF > /usr/share/gnome-background-properties/ubuntu-wallpapers.xml
+cat <<EOF | sudo tee >/dev/null /usr/share/gnome-background-properties/ubuntu-wallpapers.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
 <wallpapers>
@@ -363,19 +334,18 @@ EOF
 #   Linux scheduling.  
 #   You may want to skip the installation 
 # ---------------------------------------
-sudo apt install python3-pip
+sudo apt -y -qq install python3-pip
 pip3 install bokeh
+sudo apt -y autoremove
 # ---------------------------------------
 # Set Activities 
 # ---------------------------------------
-dconf write  /org/gnome/shell/favorite-apps   "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop']"
+sudo dconf write /org/gnome/shell/favorite-apps "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop']"
 # ---------------------------------------
 # Download remaining shell scripts
 # ---------------------------------------
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.sh
+wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/{makeLiveCD.sh,createBootableUSB.sh}
 # ---------------------------------------
 # Reboot 
 # ---------------------------------------
 sudo reboot
-
