@@ -31,7 +31,7 @@ echo Checking prerequisites
 
 ARCH=$(uname -m)
 sudo apt -y -qq install squashfs-tools xorriso casper lupin-casper 1>/dev/null 2>/dev/null
-# sudo apt -y -qq install grub-pc-bin grub-efi-${ARCH}-bin 1>/dev/null 2>/dev/null
+sudo apt -y -qq install grub-pc-bin grub-efi-amd64-bin mtools 1>/dev/null 2>/dev/null
 sudo apt -y -qq autoremove
 sudo apt clean
 sudo apt-get clean

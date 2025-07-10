@@ -52,13 +52,6 @@ while :; do
 done
 
 ############################################################
-read -ep "Please enter the name for the new partition: (default: LAB_LIVE_DISK) " partition_name
-
-if [ -z "${partition_name}" ]; then
-    partition_name="LAB_LIVE_DISK"
-fi
-
-############################################################
 
 while :; do
 	X=`df | grep "$disk" | awk 'BEGIN { ORS=" " }; {print $1F}'`
@@ -77,57 +70,8 @@ done
 echo "Formatting ${disk}"
 # Wipe the disk clean
 sudo wipefs -a "${disk}"
-# Partition the disk with GUID partition table
-sudo parted "${disk}" mklabel gpt
-# Partition 1
-sudo parted "${disk}" mkpart '"BIOS boot partition"' fat32 1MiB 2MiB
-sudo parted "${disk}" set 1 bios_grub on
-# Partition 2
-sudo parted "${disk}" mkpart '"EFI system partition"' fat32 2MiB 1026MiB
-sudo parted "${disk}" set 2 esp on
-# Partition 3
-sudo parted "${disk}" mkpart '"root partition"' fat32 1026MiB 100%
 
-sleep 3 # May take some time for the partitions to appear
+# Write the ISO to the disk
+sudo dd if="${iso_src}" of="${disk}" bs=4M status=progress oflag=sync
 
-sudo mkfs.fat -F 32 "${disk}2"
-sudo mkfs.ext4 -F "${disk}3"
-
-############################################################
-echo "Installing GRUB"
-
-root_mnt=/tmp/liveCD/mnt/root
-efi_mnt=/tmp/liveCD/mnt/efi
-mkdir -p ${root_mnt} ${efi_mnt} 
-sudo mount "${disk}3" "${root_mnt}"
-sudo mount "${disk}2" "${efi_mnt}"
-
-sudo grub-install --target=x86_64-efi --efi-directory="${efi_mnt}" --removable -s --no-floppy --force --root-directory="${root_mnt}" "${disk}"
-sudo grub-install --target=i386-pc --removable -s --no-floppy --force --root-directory="${root_mnt}" "${disk}"
-
-############################################################
-echo Writing GRUB configuration
-
-iso_dst=/root.iso
-cat <<EOF | sudo tee >/dev/null ${root_mnt}/boot/grub/grub.cfg
-set default="0"
-set timeout=0
-
-loopback loop ${iso_dst}
-set root=(loop)
-
-menuentry "Boot LIVE CD from HDD/USB" {
-linux /casper/vmlinuz boot=casper net.ifnames=0 biosdevname=0 noprompt
-initrd /casper/initrd
-}
-EOF
-
-############################################################
-echo "Copying the LiveCD to the USB drive.."
-
-sudo cp "${iso_src}" "${root_mnt}/${iso_dst}"
-
-############################################################
-
-sudo umount "${root_mnt}" "${efi_mnt}"
 echo Done
