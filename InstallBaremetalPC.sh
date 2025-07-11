@@ -282,7 +282,7 @@ EOF
 # ---------------------------------------
 # Download wallpaper for PCs
 # ---------------------------------------
-sudo wget -P /usr/share/backgrounds https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/PC-wallpaper/PC{1,2,3,4}.png
+sudo cp ./PC-wallpaper/PC{1,2,3,4}.png /usr/share/backgrounds/
 
 cat <<EOF | sudo tee >/dev/null /usr/share/gnome-background-properties/ubuntu-wallpapers.xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -340,11 +340,9 @@ sudo apt -y autoremove
 # ---------------------------------------
 # Set Activities 
 # ---------------------------------------
-sudo dconf write /org/gnome/shell/favorite-apps "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop']"
+gsettings set org.gnome.shell favorite-apps "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop']"
 # ---------------------------------------
-# Download remaining shell scripts
-# ---------------------------------------
-wget https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/{makeLiveCD.sh,createBootableUSB.sh}
+
 # ---------------------------------------
 # Reboot 
 # ---------------------------------------
