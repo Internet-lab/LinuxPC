@@ -139,6 +139,9 @@ echo Creating source directory
 # Copy everything to source directory
 sudo rsync -ax --delete --delete-excluded --info=progress2 --include-from="${included_list_file}" --exclude-from="${excluded_list_file}" "/" "${src_dir}"
 
+# Remove bash history 
+sudo rm -f "${src_dir}/home/*/.bash_history"
+
 ############################################################
 echo Configuring Casper
 

@@ -128,15 +128,6 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
      sudo hostnamectl set-hostname PC1
      ```
 
-
-  - Just before running the script clear the history of bash commands (to prevent that they are copied to the LiveCD) with
-   
-     ```     
-     $ history -c     
-     $ >.bash_history
-     $ >.wget-hsts 
-     ```
-
   - The script `makeLiveCD.sh` is in the `~/LinuxPC` directory you cloned from git in section 2. Change to this directory with the command
 
    ```
