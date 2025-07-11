@@ -67,10 +67,6 @@ while :; do
 	fi
 done
 
-echo "Formatting ${disk}"
-# Wipe the disk clean
-sudo wipefs -a "${disk}"
-
 # Write the ISO to the disk
 sudo dd if="${iso_src}" of="${disk}" bs=4M status=progress oflag=sync
 
