@@ -209,7 +209,7 @@ find ${livecd_dir} -type f -print0 | xargs -0 sudo md5sum | sed "s@${livecd_dir}
 grub_config_file="${livecd_dir}/boot/grub/grub.cfg"
 cat <<EOF | sudo tee >/dev/null "${grub_config_file}"
 set default="0"
-set timeout=10
+set timeout=3
 
 menuentry "LiveCD Default" {
 linux /casper/vmlinuz boot=casper ro net.ifnames=0 biosdevname=0 quiet noprompt fsck.mode=skip
