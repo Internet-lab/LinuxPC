@@ -174,7 +174,7 @@ $ sudo lsblk -p
 
 Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /dev/sdc or /dev/sdc1). 
 
-c. From the `/home/labuser/LinuxPC` directory, run the script with the command 
+c. From the `~/LinuxPC` directory, run the script with the command 
 
 ```
 $ bash createBootableUSB.sh
