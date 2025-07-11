@@ -40,7 +40,7 @@ $ cd LinuxPC
 d. Execute the script with the command 
 
 ```
-$ sudo bash InstallBaremetalPC.sh
+$ bash InstallBaremetalPC.sh
 ```
 
  - The script installs  software packages and sets configuration files needed in the Internet Lab (as well as some additional software). 
