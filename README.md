@@ -50,13 +50,8 @@ $ sudo bash InstallBaremetalPC.sh
 e. Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
-  - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
-  - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Ports`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
+  - Change the power saving mode to prevent that the system locks  the screen after an idle period or suspends. In the Ubuntu desktop go to `Settings→ Power`. In *Power Saving*, select **Never**. In *Suspend & Power Button*, set *Automatic Suspend* to **Off**.
   - In the file `/usr/share/applications/wireshark.desktop`, change the line `Exec=wireshark %f` to *`Exec=sudo wireshark %f`*. 
-  - Check for needed updates of packages
-     ```
-     $ sudo apt-get update --fix-missing
-     ```
   - The snap daemon delays the shutdown process up to 90 seconds. The following instructions set the delay to 10 seconds. To do this open the file `/etc/systemd/system.conf` with sudo privileges, e.g.,
     Find the line with `#DefaultTimeoutStopSec=90s`:
      ```
@@ -191,11 +186,11 @@ Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /
 c. From the `/home/labuser/LinuxPC` directory, run the script with the command 
 
 ```
-$ sudo bash createBootableUSB.sh
+$ bash createBootableUSB.sh
 ```
 
 The script prompts for hardware specific information. In particular, the script requests to enter the device name of the flash drive (`/dev/sdb`).
-Once the script is completed, remove the flash drive.  The flash drive contains  the ISO image (`root.iso`) and grub configuration files.
+Once the script is completed, remove the flash drive.  The flash drive contains  the ISO image (`liveCD.iso`) and grub configuration files.
 
 ## 5. Installing the LiveCD on the hard drive 
 Thee following instructions install the LiveCD on the hard drive of the target machine. 
@@ -226,7 +221,7 @@ In many cases the hard disk is `/dev/sda`. Verify that this is the case.
 e. From the home directory of `labuser`, run the script with the command 
 
 ```
-$ sudo bash createBootableUSB.sh
+$ bash createBootableUSB.sh
 ```
 
 When the script requests to enter the device name of the target drive, enter `/dev/sda`. If entered for the path of the ISO file, enter `/isodevice/`.  
