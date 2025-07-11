@@ -3,7 +3,7 @@
 The available scripts install a Live CD version of the Linux PC for the Internet Lab on a "baremetal" PC system.  
 The process described here assumes that the installation is done in Virtualbox on a Mac or Windows or Linux system (The scripts also run on a native Linux installation).
 
-Version:  August 2023
+Version:  July 2025
 ## 1. Install Ubuntu server 
 For installing Ubuntu server in Virtualbox, there are excellent instructions available at https://hibbard.eu/install-ubuntu-virtual-box/ . Follow the instructions until you get to *"Up and Running with SSH"*. 
 
@@ -25,13 +25,19 @@ Consider the following points during the installation:
 ## 2. Install software on Ubuntu server
 a. Start the Ubuntu server in Virtualbox and log in as `labuser`. 
 
-b. From the home directory of `labuser` download the script *InstallBaremetalPC.sh* using the command 
+b. From the home directory of `labuser` clone this repository using the command 
 
 ```
-$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/InstallBaremetalPC.sh
+$ git clone https://github.com/Internet-lab/LinuxPC.git
 ```
 
-c. Execute the script with the command 
+c. Change to the directory `LinuxPC` with the command 
+
+```
+$ cd LinuxPC
+```
+
+d. Execute the script with the command 
 
 ```
 $ sudo bash InstallBaremetalPC.sh
@@ -39,10 +45,9 @@ $ sudo bash InstallBaremetalPC.sh
 
  - The script installs  software packages and sets configuration files needed in the Internet Lab (as well as some additional software). 
  - Answer `Y` when  prompted and select `<Yes>` in the screen `Configuring wireshark-common`. 
- - The script also downloads the shell scripts `makeLiveCD.sh` and `createBootableUSB.sh` used for the creation of the LiveCD.
  - The script reboots the OS, when the system reboots it will show a login screen of the Gnome Desktop. Login as `labuser` and verify that the software installation is completed. 
 
-d. Touch up the VM 
+e. Touch up the VM 
   - If not already logged in, start the (Build) VM and log in as `labuser`.
   - Change the screen background. There are templates available for PC1, PC2, ...
   - In the *Activities*, remove the icon for `Help` and add icons for `Wireshark`, `Screenshot`, `LXTerminal`, `Files`,  and `Mousepad`.
@@ -128,11 +133,6 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
      sudo hostnamectl set-hostname PC1
      ```
 
-  - Check that the script `makeLiveCD.sh` is in the home directory. If not, download the script with
-
-     ```
-     $ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/makeLiveCD.sh
-     ```
 
   - Just before running the script clear the history of bash commands (to prevent that they are copied to the LiveCD) with
    
@@ -141,8 +141,14 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
      $ >.bash_history
      $ >.wget-hsts 
      ```
-   
-  - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. From the home directory of `labuser`, run the script with the command 
+
+  - The script `makeLiveCD.sh` is in the `~/LinuxPC` directory you cloned from git in section 2. Change to this directory with the command
+
+   ```
+   cd ~/LinuxPC
+   ```
+
+  - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. Run the script with the command 
   ```
   $ sudo bash makeLiveCD.sh
   ```
@@ -169,10 +175,10 @@ Sometimes the Ubuntu VM is unable to grab the flash drive, i.e., it does not app
 
 ### 4.2 Install LiveCD on flash drive
 
-a. Check that the script `createBootableUSB.sh` is in the home directory. If not, download the script with
+a. The script `createBootableUSB.sh` is in `~/LinuxPC` directory you cloned from git in section 2.
 
 ```
-$ wget  https://raw.githubusercontent.com/Internet-lab/LinuxPC/main/createBootableUSB.s
+cd ~/LinuxPC
 ```
 b. Identify the device name of the flash drive with the command 
 
@@ -182,7 +188,7 @@ $ sudo lsblk -p
 
 Typically, the device name is /dev/sdb with one partition /dev/sdb1 (It can be /dev/sdc or /dev/sdc1). 
 
-c. From the home directory of `labuser`, run the script with the command 
+c. From the `/home/labuser/LinuxPC` directory, run the script with the command 
 
 ```
 $ sudo bash createBootableUSB.sh
