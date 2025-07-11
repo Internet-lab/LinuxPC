@@ -128,7 +128,7 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
      sudo hostnamectl set-hostname PC1
      ```
 
-  - The script `makeLiveCD.sh` is in the `~/LinuxPC` directory you cloned from git in section 2. Change to this directory with the command
+  - The script `makeLiveCD.sh` is in the `~/LinuxPC` directory you cloned from git repository in section 2. Change to this directory with the command
 
    ```
    cd ~/LinuxPC
@@ -136,7 +136,7 @@ Check the desktop background. Change it to match one of PC1, PC2, P3, PC4.
 
   - The shelll script `makeLiveCD.sh` creates an .iso image (“liveCD.iso”) from the current virtual machine. Run the script with the command 
   ```
-  $ sudo bash makeLiveCD.sh
+  $ bash makeLiveCD.sh
   ```
 
 The script asks a few times for information. If you do not know otherwise, select the default option.  The default location of the ISO script is `/tmp/liveCD/liveCD.iso`. When prompted for the hostname, enter one of `PC1, PC2, PC3, PC4`.
