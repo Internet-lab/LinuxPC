@@ -340,7 +340,7 @@ sudo apt -y autoremove
 # ---------------------------------------
 # Set Activities 
 # ---------------------------------------
-gsettings set org.gnome.shell favorite-apps "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop', 'org.gnome.Screenshot']"
+gsettings set org.gnome.shell favorite-apps "['lxterminal.desktop', 'wireshark.desktop', 'mousepad.desktop', 'nemo.desktop', 'org.gnome.Screenshot.desktop']"
 # ---------------------------------------
 
 # ---------------------------------------
